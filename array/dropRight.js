@@ -1,5 +1,5 @@
 var baseSlice = require('../internal/baseSlice'),
-    isIterateeCall = require('../internal/isIterateeCall');
+    toInteger = require('../lang/toInteger');
 
 /**
  * Creates a slice of `array` with `n` elements dropped from the end.
@@ -9,7 +9,7 @@ var baseSlice = require('../internal/baseSlice'),
  * @category Array
  * @param {Array} array The array to query.
  * @param {number} [n=1] The number of elements to drop.
- * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+ * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
  * @returns {Array} Returns the slice of `array`.
  * @example
  *
@@ -30,10 +30,8 @@ function dropRight(array, n, guard) {
   if (!length) {
     return [];
   }
-  if (guard ? isIterateeCall(array, n, guard) : n == null) {
-    n = 1;
-  }
-  n = length - (+n || 0);
+  n = (guard || n === undefined) ? 1 : toInteger(n);
+  n = length - n;
   return baseSlice(array, 0, n < 0 ? 0 : n);
 }
 

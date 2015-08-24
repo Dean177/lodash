@@ -1,4 +1,5 @@
-var createCompounder = require('../internal/createCompounder');
+var capitalize = require('./capitalize'),
+    createCompounder = require('../internal/createCompounder');
 
 /**
  * Converts `string` to [camel case](https://en.wikipedia.org/wiki/CamelCase).
@@ -21,7 +22,7 @@ var createCompounder = require('../internal/createCompounder');
  */
 var camelCase = createCompounder(function(result, word, index) {
   word = word.toLowerCase();
-  return result + (index ? (word.charAt(0).toUpperCase() + word.slice(1)) : word);
+  return result + (index ? capitalize(word) : word);
 });
 
 module.exports = camelCase;

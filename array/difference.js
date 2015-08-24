@@ -1,8 +1,7 @@
 var baseDifference = require('../internal/baseDifference'),
     baseFlatten = require('../internal/baseFlatten'),
-    isArrayLike = require('../internal/isArrayLike'),
-    isObjectLike = require('../internal/isObjectLike'),
-    restParam = require('../function/restParam');
+    isArrayLikeObject = require('../lang/isArrayLikeObject'),
+    rest = require('../function/rest');
 
 /**
  * Creates an array of unique `array` values not included in the other
@@ -13,15 +12,15 @@ var baseDifference = require('../internal/baseDifference'),
  * @memberOf _
  * @category Array
  * @param {Array} array The array to inspect.
- * @param {...Array} [values] The arrays of values to exclude.
+ * @param {...Array} [values] The values to exclude.
  * @returns {Array} Returns the new array of filtered values.
  * @example
  *
- * _.difference([1, 2, 3], [4, 2]);
- * // => [1, 3]
+ * _.difference([3, 2, 1], [4, 2]);
+ * // => [3, 1]
  */
-var difference = restParam(function(array, values) {
-  return (isObjectLike(array) && isArrayLike(array))
+var difference = rest(function(array, values) {
+  return isArrayLikeObject(array)
     ? baseDifference(array, baseFlatten(values, false, true))
     : [];
 });

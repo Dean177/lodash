@@ -1,13 +1,13 @@
-var baseAt = require('../internal/baseAt'),
-    baseCompareAscending = require('../internal/baseCompareAscending'),
+var arrayMap = require('../internal/arrayMap'),
+    baseAt = require('../internal/baseAt'),
     baseFlatten = require('../internal/baseFlatten'),
     basePullAt = require('../internal/basePullAt'),
-    restParam = require('../function/restParam');
+    compareAscending = require('../internal/compareAscending'),
+    rest = require('../function/rest');
 
 /**
- * Removes elements from `array` corresponding to the given indexes and returns
- * an array of the removed elements. Indexes may be specified as an array of
- * indexes or as individual arguments.
+ * Removes elements from `array` corresponding to `indexes` and returns an
+ * array of removed elements.
  *
  * **Note:** Unlike `_.at`, this method mutates `array`.
  *
@@ -16,7 +16,7 @@ var baseAt = require('../internal/baseAt'),
  * @category Array
  * @param {Array} array The array to modify.
  * @param {...(number|number[])} [indexes] The indexes of elements to remove,
- *  specified as individual indexes or arrays of indexes.
+ *  specified individually or in arrays.
  * @returns {Array} Returns the new array of removed elements.
  * @example
  *
@@ -29,11 +29,11 @@ var baseAt = require('../internal/baseAt'),
  * console.log(evens);
  * // => [10, 20]
  */
-var pullAt = restParam(function(array, indexes) {
-  indexes = baseFlatten(indexes);
+var pullAt = rest(function(array, indexes) {
+  indexes = arrayMap(baseFlatten(indexes), String);
 
   var result = baseAt(array, indexes);
-  basePullAt(array, indexes.sort(baseCompareAscending));
+  basePullAt(array, indexes.sort(compareAscending));
   return result;
 });
 

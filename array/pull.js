@@ -1,10 +1,5 @@
-var baseIndexOf = require('../internal/baseIndexOf');
-
-/** Used for native method references. */
-var arrayProto = Array.prototype;
-
-/** Native method references. */
-var splice = arrayProto.splice;
+var pullAll = require('./pullAll'),
+    rest = require('../function/rest');
 
 /**
  * Removes all provided values from `array` using
@@ -27,26 +22,6 @@ var splice = arrayProto.splice;
  * console.log(array);
  * // => [1, 1]
  */
-function pull() {
-  var args = arguments,
-      array = args[0];
-
-  if (!(array && array.length)) {
-    return array;
-  }
-  var index = 0,
-      indexOf = baseIndexOf,
-      length = args.length;
-
-  while (++index < length) {
-    var fromIndex = 0,
-        value = args[index];
-
-    while ((fromIndex = indexOf(array, value, fromIndex)) > -1) {
-      splice.call(array, fromIndex, 1);
-    }
-  }
-  return array;
-}
+var pull = rest(pullAll);
 
 module.exports = pull;

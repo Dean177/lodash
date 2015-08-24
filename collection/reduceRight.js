@@ -1,6 +1,8 @@
 var arrayReduceRight = require('../internal/arrayReduceRight'),
     baseEachRight = require('../internal/baseEachRight'),
-    createReduce = require('../internal/createReduce');
+    baseIteratee = require('../internal/baseIteratee'),
+    baseReduce = require('../internal/baseReduce'),
+    isArray = require('../lang/isArray');
 
 /**
  * This method is like `_.reduce` except that it iterates over elements of
@@ -8,12 +10,10 @@ var arrayReduceRight = require('../internal/arrayReduceRight'),
  *
  * @static
  * @memberOf _
- * @alias foldr
  * @category Collection
- * @param {Array|Object|string} collection The collection to iterate over.
+ * @param {Array|Object} collection The collection to iterate over.
  * @param {Function} [iteratee=_.identity] The function invoked per iteration.
  * @param {*} [accumulator] The initial value.
- * @param {*} [thisArg] The `this` binding of `iteratee`.
  * @returns {*} Returns the accumulated value.
  * @example
  *
@@ -24,6 +24,11 @@ var arrayReduceRight = require('../internal/arrayReduceRight'),
  * }, []);
  * // => [4, 5, 2, 3, 0, 1]
  */
-var reduceRight = createReduce(arrayReduceRight, baseEachRight);
+function reduceRight(collection, iteratee, accumulator) {
+  var initFromCollection = arguments.length < 3;
+  return (typeof iteratee == 'function' && isArray(collection))
+    ? arrayReduceRight(collection, iteratee, accumulator, initFromCollection)
+    : baseReduce(collection, baseIteratee(iteratee, 4), accumulator, initFromCollection, baseEachRight);
+}
 
 module.exports = reduceRight;

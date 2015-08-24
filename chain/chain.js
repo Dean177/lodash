@@ -1,8 +1,8 @@
 var lodash = require('./lodash');
 
 /**
- * Creates a `lodash` object that wraps `value` with explicit method
- * chaining enabled.
+ * Creates a `lodash` object that wraps `value` with explicit method chaining enabled.
+ * The result of such method chaining must be unwrapped with `_#value`.
  *
  * @static
  * @memberOf _
@@ -17,12 +17,13 @@ var lodash = require('./lodash');
  *   { 'user': 'pebbles', 'age': 1 }
  * ];
  *
- * var youngest = _.chain(users)
+ * var youngest = _
+ *   .chain(users)
  *   .sortBy('age')
- *   .map(function(chr) {
- *     return chr.user + ' is ' + chr.age;
+ *   .map(function(o) {
+ *     return o.user + ' is ' + o.age;
  *   })
- *   .first()
+ *   .head()
  *   .value();
  * // => 'pebbles is 1'
  */

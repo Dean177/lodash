@@ -1,10 +1,10 @@
-var isObjectLike = require('../internal/isObjectLike');
+var isObjectLike = require('./isObjectLike');
 
 /** `Object#toString` result references. */
 var dateTag = '[object Date]';
 
-/** Used for native method references. */
-var objectProto = Object.prototype;
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
 
 /**
  * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)

@@ -1,24 +1,15 @@
-var arrayEvery = require('../internal/arrayEvery'),
-    baseFlatten = require('../internal/baseFlatten'),
-    baseIsFunction = require('../internal/baseIsFunction'),
-    restParam = require('./restParam');
-
-/** Used as the `TypeError` message for "Functions" methods. */
-var FUNC_ERROR_TEXT = 'Expected a function';
-
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeMin = Math.min;
+var createModArgs = require('../internal/createModArgs');
 
 /**
- * Creates a function that runs each argument through a corresponding
- * transform function.
+ * Creates a function that invokes `func` with arguments modified by
+ * corresponding `transforms`.
  *
  * @static
  * @memberOf _
  * @category Function
  * @param {Function} func The function to wrap.
  * @param {...(Function|Function[])} [transforms] The functions to transform
- * arguments, specified as individual functions or arrays of functions.
+ * arguments, specified individually or in arrays.
  * @returns {Function} Returns the new function.
  * @example
  *
@@ -34,25 +25,14 @@ var nativeMin = Math.min;
  *   return [x, y];
  * }, square, doubled);
  *
- * modded(1, 2);
- * // => [1, 4]
+ * modded(9, 3);
+ * // => [81, 6]
  *
- * modded(5, 10);
- * // => [25, 20]
+ * modded(10, 5);
+ * // => [100, 10]
  */
-var modArgs = restParam(function(func, transforms) {
-  transforms = baseFlatten(transforms);
-  if (typeof func != 'function' || !arrayEvery(transforms, baseIsFunction)) {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  var length = transforms.length;
-  return restParam(function(args) {
-    var index = nativeMin(args.length, length);
-    while (index--) {
-      args[index] = transforms[index](args[index]);
-    }
-    return func.apply(this, args);
-  });
+var modArgs = createModArgs(function(value) {
+  return [value];
 });
 
 module.exports = modArgs;

@@ -3,8 +3,8 @@ var isObject = require('./isObject');
 /** `Object#toString` result references. */
 var regexpTag = '[object RegExp]';
 
-/** Used for native method references. */
-var objectProto = Object.prototype;
+/** Used for built-in method references. */
+var objectProto = global.Object.prototype;
 
 /**
  * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)

@@ -1,18 +1,15 @@
 var baseAssign = require('../internal/baseAssign'),
-    baseCreate = require('../internal/baseCreate'),
-    isIterateeCall = require('../internal/isIterateeCall');
+    baseCreate = require('../internal/baseCreate');
 
 /**
- * Creates an object that inherits from the given `prototype` object. If a
- * `properties` object is provided its own enumerable properties are assigned
- * to the created object.
+ * Creates an object that inherits from the `prototype` object. If a `properties`
+ * object is provided its own enumerable properties are assigned to the created object.
  *
  * @static
  * @memberOf _
  * @category Object
  * @param {Object} prototype The object to inherit from.
  * @param {Object} [properties] The properties to assign to the object.
- * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
  * @returns {Object} Returns the new object.
  * @example
  *
@@ -36,11 +33,8 @@ var baseAssign = require('../internal/baseAssign'),
  * circle instanceof Shape;
  * // => true
  */
-function create(prototype, properties, guard) {
+function create(prototype, properties) {
   var result = baseCreate(prototype);
-  if (guard && isIterateeCall(prototype, properties, guard)) {
-    properties = undefined;
-  }
   return properties ? baseAssign(result, properties) : result;
 }
 

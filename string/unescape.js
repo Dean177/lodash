@@ -1,4 +1,4 @@
-var baseToString = require('../internal/baseToString'),
+var toString = require('../lang/toString'),
     unescapeHtmlChar = require('../internal/unescapeHtmlChar');
 
 /** Used to match HTML entities and HTML characters. */
@@ -24,7 +24,7 @@ var reEscapedHtml = /&(?:amp|lt|gt|quot|#39|#96);/g,
  * // => 'fred, barney, & pebbles'
  */
 function unescape(string) {
-  string = baseToString(string);
+  string = toString(string);
   return (string && reHasEscapedHtml.test(string))
     ? string.replace(reEscapedHtml, unescapeHtmlChar)
     : string;

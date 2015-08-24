@@ -1,15 +1,14 @@
-var assignOwnDefaults = require('../internal/assignOwnDefaults'),
-    assignWith = require('../internal/assignWith'),
+var assignInDefaults = require('../internal/assignInDefaults'),
+    assignInWith = require('../object/assignInWith'),
     attempt = require('../utility/attempt'),
-    baseAssign = require('../internal/baseAssign'),
-    baseToString = require('../internal/baseToString'),
     baseValues = require('../internal/baseValues'),
     escapeStringChar = require('../internal/escapeStringChar'),
     isError = require('../lang/isError'),
     isIterateeCall = require('../internal/isIterateeCall'),
     keys = require('../object/keys'),
     reInterpolate = require('../internal/reInterpolate'),
-    templateSettings = require('./templateSettings');
+    templateSettings = require('./templateSettings'),
+    toString = require('../lang/toString');
 
 /** Used to match empty string literals in compiled template source. */
 var reEmptyStringLeading = /\b__p \+= '';/g,
@@ -129,10 +128,10 @@ function template(string, options, otherOptions) {
   if (otherOptions && isIterateeCall(string, options, otherOptions)) {
     options = otherOptions = undefined;
   }
-  string = baseToString(string);
-  options = assignWith(baseAssign({}, otherOptions || options), settings, assignOwnDefaults);
+  string = toString(string);
+  options = assignInWith({}, otherOptions || options, settings, assignInDefaults);
 
-  var imports = assignWith(baseAssign({}, options.imports), settings.imports, assignOwnDefaults),
+  var imports = assignInWith({}, options.imports, settings.imports, assignInDefaults),
       importsKeys = keys(imports),
       importsValues = baseValues(imports, importsKeys);
 
@@ -173,8 +172,8 @@ function template(string, options, otherOptions) {
     }
     index = offset + match.length;
 
-    // The JS engine embedded in Adobe products requires returning the `match`
-    // string in order to produce the correct `offset` value.
+    // The JS engine embedded in Adobe products needs `match` returned in
+    // order to produce the correct `offset` value.
     return match;
   });
 

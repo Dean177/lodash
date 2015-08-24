@@ -1,12 +1,12 @@
 var createRound = require('../internal/createRound');
 
 /**
- * Calculates `n` rounded to `precision`.
+ * Computes `number` rounded to `precision`.
  *
  * @static
  * @memberOf _
  * @category Math
- * @param {number} n The number to round.
+ * @param {number} number The number to round.
  * @param {number} [precision=0] The precision to round to.
  * @returns {number} Returns the rounded number.
  * @example

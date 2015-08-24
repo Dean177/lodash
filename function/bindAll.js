@@ -1,25 +1,20 @@
-var baseFlatten = require('../internal/baseFlatten'),
-    createWrapper = require('../internal/createWrapper'),
-    functions = require('../object/functions'),
-    restParam = require('./restParam');
-
-/** Used to compose bitmasks for wrapper metadata. */
-var BIND_FLAG = 1;
+var arrayEach = require('../internal/arrayEach'),
+    baseFlatten = require('../internal/baseFlatten'),
+    bind = require('./bind'),
+    rest = require('./rest');
 
 /**
  * Binds methods of an object to the object itself, overwriting the existing
- * method. Method names may be specified as individual arguments or as arrays
- * of method names. If no method names are provided all enumerable function
- * properties, own and inherited, of `object` are bound.
+ * method.
  *
- * **Note:** This method does not set the "length" property of bound functions.
+ * **Note:** This method doesn't set the "length" property of bound functions.
  *
  * @static
  * @memberOf _
  * @category Function
  * @param {Object} object The object to bind and assign the bound methods to.
- * @param {...(string|string[])} [methodNames] The object method names to bind,
- *  specified as individual method names or arrays of method names.
+ * @param {...(string|string[])} methodNames The object method names to bind,
+ *  specified individually or in arrays.
  * @returns {Object} Returns `object`.
  * @example
  *
@@ -30,20 +25,14 @@ var BIND_FLAG = 1;
  *   }
  * };
  *
- * _.bindAll(view);
+ * _.bindAll(view, 'onClick');
  * jQuery('#docs').on('click', view.onClick);
  * // => logs 'clicked docs' when the element is clicked
  */
-var bindAll = restParam(function(object, methodNames) {
-  methodNames = methodNames.length ? baseFlatten(methodNames) : functions(object);
-
-  var index = -1,
-      length = methodNames.length;
-
-  while (++index < length) {
-    var key = methodNames[index];
-    object[key] = createWrapper(object[key], BIND_FLAG, object);
-  }
+var bindAll = rest(function(object, methodNames) {
+  arrayEach(baseFlatten(methodNames), function(key) {
+    object[key] = bind(object[key], object);
+  });
   return object;
 });
 

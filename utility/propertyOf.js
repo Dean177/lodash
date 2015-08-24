@@ -1,9 +1,8 @@
-var baseGet = require('../internal/baseGet'),
-    toPath = require('../internal/toPath');
+var baseGet = require('../internal/baseGet');
 
 /**
  * The opposite of `_.property`; this method creates a function that returns
- * the property value at a given path on `object`.
+ * the value at a given path of `object`.
  *
  * @static
  * @memberOf _
@@ -23,7 +22,7 @@ var baseGet = require('../internal/baseGet'),
  */
 function propertyOf(object) {
   return function(path) {
-    return baseGet(object, toPath(path), (path + ''));
+    return object == null ? undefined : baseGet(object, path);
   };
 }
 

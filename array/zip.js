@@ -1,4 +1,4 @@
-var restParam = require('../function/restParam'),
+var rest = require('../function/rest'),
     unzip = require('./unzip');
 
 /**
@@ -16,6 +16,6 @@ var restParam = require('../function/restParam'),
  * _.zip(['fred', 'barney'], [30, 40], [true, false]);
  * // => [['fred', 30, true], ['barney', 40, false]]
  */
-var zip = restParam(unzip);
+var zip = rest(unzip);
 
 module.exports = zip;

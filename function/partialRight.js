@@ -1,4 +1,6 @@
-var createPartial = require('../internal/createPartial');
+var createWrapper = require('../internal/createWrapper'),
+    replaceHolders = require('../internal/replaceHolders'),
+    rest = require('./rest');
 
 /** Used to compose bitmasks for wrapper metadata. */
 var PARTIAL_RIGHT_FLAG = 64;
@@ -10,7 +12,7 @@ var PARTIAL_RIGHT_FLAG = 64;
  * The `_.partialRight.placeholder` value, which defaults to `_` in monolithic
  * builds, may be used as a placeholder for partially applied arguments.
  *
- * **Note:** This method does not set the "length" property of partially
+ * **Note:** This method doesn't set the "length" property of partially
  * applied functions.
  *
  * @static
@@ -34,9 +36,9 @@ var PARTIAL_RIGHT_FLAG = 64;
  * sayHelloTo('fred');
  * // => 'hello fred'
  */
-var partialRight = createPartial(PARTIAL_RIGHT_FLAG);
-
-// Assign default placeholders.
-partialRight.placeholder = {};
+var partialRight = rest(function(func, partials) {
+  var holders = replaceHolders(partials, partialRight.placeholder);
+  return createWrapper(func, PARTIAL_RIGHT_FLAG, undefined, partials, holders);
+});
 
 module.exports = partialRight;

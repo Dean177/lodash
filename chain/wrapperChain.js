@@ -15,12 +15,13 @@ var chain = require('./chain');
  * ];
  *
  * // without explicit chaining
- * _(users).first();
+ * _(users).head();
  * // => { 'user': 'barney', 'age': 36 }
  *
  * // with explicit chaining
- * _(users).chain()
- *   .first()
+ * _(users)
+ *   .chain()
+ *   .head()
  *   .pick('user')
  *   .value();
  * // => { 'user': 'barney' }

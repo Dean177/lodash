@@ -6,7 +6,6 @@
  * @category Chain
  * @param {*} value The value to provide to `interceptor`.
  * @param {Function} interceptor The function to invoke.
- * @param {*} [thisArg] The `this` binding of `interceptor`.
  * @returns {*} Returns the result of `interceptor`.
  * @example
  *
@@ -19,8 +18,8 @@
  *  .value();
  * // => ['abc']
  */
-function thru(value, interceptor, thisArg) {
-  return interceptor.call(thisArg, value);
+function thru(value, interceptor) {
+  return interceptor(value);
 }
 
 module.exports = thru;

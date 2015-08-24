@@ -1,15 +1,12 @@
-var getNative = require('../internal/getNative');
-
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeNow = getNative(Date, 'now');
-
 /**
- * Gets the number of milliseconds that have elapsed since the Unix epoch
- * (1 January 1970 00:00:00 UTC).
+ * Gets the timestamp of the number of milliseconds that have elapsed since
+ * the Unix epoch (1 January 1970 00:00:00 UTC).
  *
  * @static
  * @memberOf _
+ * @type Function
  * @category Date
+ * @returns {number} Returns the timestamp.
  * @example
  *
  * _.defer(function(stamp) {
@@ -17,8 +14,6 @@ var nativeNow = getNative(Date, 'now');
  * }, _.now());
  * // => logs the number of milliseconds it took for the deferred function to be invoked
  */
-var now = nativeNow || function() {
-  return new Date().getTime();
-};
+var now = Date.now;
 
 module.exports = now;

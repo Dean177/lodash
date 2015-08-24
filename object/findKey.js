@@ -1,28 +1,16 @@
-var baseForOwn = require('../internal/baseForOwn'),
-    createFindKey = require('../internal/createFindKey');
+var baseFind = require('../internal/baseFind'),
+    baseForOwn = require('../internal/baseForOwn'),
+    baseIteratee = require('../internal/baseIteratee');
 
 /**
  * This method is like `_.find` except that it returns the key of the first
  * element `predicate` returns truthy for instead of the element itself.
  *
- * If a property name is provided for `predicate` the created `_.property`
- * style callback returns the property value of the given element.
- *
- * If a value is also provided for `thisArg` the created `_.matchesProperty`
- * style callback returns `true` for elements that have a matching property
- * value, else `false`.
- *
- * If an object is provided for `predicate` the created `_.matches` style
- * callback returns `true` for elements that have the properties of the given
- * object, else `false`.
- *
  * @static
  * @memberOf _
  * @category Object
  * @param {Object} object The object to search.
- * @param {Function|Object|string} [predicate=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
  * @returns {string|undefined} Returns the key of the matched element, else `undefined`.
  * @example
  *
@@ -32,9 +20,7 @@ var baseForOwn = require('../internal/baseForOwn'),
  *   'pebbles': { 'age': 1,  'active': true }
  * };
  *
- * _.findKey(users, function(chr) {
- *   return chr.age < 40;
- * });
+ * _.findKey(users, function(o) { return o.age < 40; });
  * // => 'barney' (iteration order is not guaranteed)
  *
  * // using the `_.matches` callback shorthand
@@ -42,13 +28,15 @@ var baseForOwn = require('../internal/baseForOwn'),
  * // => 'pebbles'
  *
  * // using the `_.matchesProperty` callback shorthand
- * _.findKey(users, 'active', false);
+ * _.findKey(users, ['active', false]);
  * // => 'fred'
  *
  * // using the `_.property` callback shorthand
  * _.findKey(users, 'active');
  * // => 'barney'
  */
-var findKey = createFindKey(baseForOwn);
+function findKey(object, predicate) {
+  return baseFind(object, baseIteratee(predicate, 3), baseForOwn, true);
+}
 
 module.exports = findKey;

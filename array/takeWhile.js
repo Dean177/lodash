@@ -1,36 +1,20 @@
-var baseCallback = require('../internal/baseCallback'),
+var baseIteratee = require('../internal/baseIteratee'),
     baseWhile = require('../internal/baseWhile');
 
 /**
  * Creates a slice of `array` with elements taken from the beginning. Elements
- * are taken until `predicate` returns falsey. The predicate is bound to
- * `thisArg` and invoked with three arguments: (value, index, array).
- *
- * If a property name is provided for `predicate` the created `_.property`
- * style callback returns the property value of the given element.
- *
- * If a value is also provided for `thisArg` the created `_.matchesProperty`
- * style callback returns `true` for elements that have a matching property
- * value, else `false`.
- *
- * If an object is provided for `predicate` the created `_.matches` style
- * callback returns `true` for elements that have the properties of the given
- * object, else `false`.
+ * are taken until `predicate` returns falsey. The predicate is invoked with
+ * three arguments: (value, index, array).
  *
  * @static
  * @memberOf _
  * @category Array
  * @param {Array} array The array to query.
- * @param {Function|Object|string} [predicate=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
  * @returns {Array} Returns the slice of `array`.
  * @example
  *
- * _.takeWhile([1, 2, 3], function(n) {
- *   return n < 3;
- * });
- * // => [1, 2]
+ * var resolve = _.partial(_.map, _, 'user');
  *
  * var users = [
  *   { 'user': 'barney',  'active': false },
@@ -38,21 +22,24 @@ var baseCallback = require('../internal/baseCallback'),
  *   { 'user': 'pebbles', 'active': true }
  * ];
  *
+ * resolve( _.takeWhile(users, function(o) { return !o.active; }) );
+ * // => ['barney', 'fred']
+ *
  * // using the `_.matches` callback shorthand
- * _.pluck(_.takeWhile(users, { 'user': 'barney', 'active': false }), 'user');
+ * resolve( _.takeWhile(users, { 'user': 'barney', 'active': false }) );
  * // => ['barney']
  *
  * // using the `_.matchesProperty` callback shorthand
- * _.pluck(_.takeWhile(users, 'active', false), 'user');
+ * resolve( _.takeWhile(users, ['active', false]) );
  * // => ['barney', 'fred']
  *
  * // using the `_.property` callback shorthand
- * _.pluck(_.takeWhile(users, 'active'), 'user');
+ * resolve( _.takeWhile(users, 'active') );
  * // => []
  */
-function takeWhile(array, predicate, thisArg) {
+function takeWhile(array, predicate) {
   return (array && array.length)
-    ? baseWhile(array, baseCallback(predicate, thisArg, 3))
+    ? baseWhile(array, baseIteratee(predicate, 3))
     : [];
 }
 

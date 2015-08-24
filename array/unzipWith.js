@@ -1,19 +1,18 @@
 var arrayMap = require('../internal/arrayMap'),
     arrayReduce = require('../internal/arrayReduce'),
-    bindCallback = require('../internal/bindCallback'),
     unzip = require('./unzip');
 
 /**
- * This method is like `_.unzip` except that it accepts an iteratee to specify
- * how regrouped values should be combined. The `iteratee` is bound to `thisArg`
- * and invoked with four arguments: (accumulator, value, index, group).
+ * This method is like `_.unzip` except that it accepts `iteratee` to specify
+ * how regrouped values should be combined. The iteratee is invoked with four
+ * arguments: (accumulator, value, index, group). The first element of each
+ * group is used as the initial `accumulator` value.
  *
  * @static
  * @memberOf _
  * @category Array
  * @param {Array} array The array of grouped elements to process.
- * @param {Function} [iteratee] The function to combine regrouped values.
- * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @param {Function} [iteratee=_.identity] The function to combine regrouped values.
  * @returns {Array} Returns the new array of regrouped elements.
  * @example
  *
@@ -23,16 +22,14 @@ var arrayMap = require('../internal/arrayMap'),
  * _.unzipWith(zipped, _.add);
  * // => [3, 30, 300]
  */
-function unzipWith(array, iteratee, thisArg) {
-  var length = array ? array.length : 0;
-  if (!length) {
+function unzipWith(array, iteratee) {
+  if (!(array && array.length)) {
     return [];
   }
   var result = unzip(array);
   if (iteratee == null) {
     return result;
   }
-  iteratee = bindCallback(iteratee, thisArg, 4);
   return arrayMap(result, function(group) {
     return arrayReduce(group, iteratee, undefined, true);
   });

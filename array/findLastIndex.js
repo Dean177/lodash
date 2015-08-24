@@ -1,27 +1,15 @@
-var createFindIndex = require('../internal/createFindIndex');
+var baseFindIndex = require('../internal/baseFindIndex'),
+    baseIteratee = require('../internal/baseIteratee');
 
 /**
  * This method is like `_.findIndex` except that it iterates over elements
  * of `collection` from right to left.
  *
- * If a property name is provided for `predicate` the created `_.property`
- * style callback returns the property value of the given element.
- *
- * If a value is also provided for `thisArg` the created `_.matchesProperty`
- * style callback returns `true` for elements that have a matching property
- * value, else `false`.
- *
- * If an object is provided for `predicate` the created `_.matches` style
- * callback returns `true` for elements that have the properties of the given
- * object, else `false`.
- *
  * @static
  * @memberOf _
  * @category Array
  * @param {Array} array The array to search.
- * @param {Function|Object|string} [predicate=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
  * @returns {number} Returns the index of the found element, else `-1`.
  * @example
  *
@@ -31,9 +19,7 @@ var createFindIndex = require('../internal/createFindIndex');
  *   { 'user': 'pebbles', 'active': false }
  * ];
  *
- * _.findLastIndex(users, function(chr) {
- *   return chr.user == 'pebbles';
- * });
+ * _.findLastIndex(users, function(o) { return o.user == 'pebbles'; });
  * // => 2
  *
  * // using the `_.matches` callback shorthand
@@ -41,13 +27,17 @@ var createFindIndex = require('../internal/createFindIndex');
  * // => 0
  *
  * // using the `_.matchesProperty` callback shorthand
- * _.findLastIndex(users, 'active', false);
+ * _.findLastIndex(users, ['active', false]);
  * // => 2
  *
  * // using the `_.property` callback shorthand
  * _.findLastIndex(users, 'active');
  * // => 0
  */
-var findLastIndex = createFindIndex(true);
+function findLastIndex(array, predicate) {
+  return (array && array.length)
+    ? baseFindIndex(array, baseIteratee(predicate, 3), true)
+    : -1;
+}
 
 module.exports = findLastIndex;

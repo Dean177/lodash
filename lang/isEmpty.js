@@ -1,10 +1,7 @@
-var isArguments = require('./isArguments'),
-    isArray = require('./isArray'),
-    isArrayLike = require('../internal/isArrayLike'),
-    isFunction = require('./isFunction'),
-    isObjectLike = require('../internal/isObjectLike'),
-    isString = require('./isString'),
-    keys = require('../object/keys');
+var isFunction = require('./isFunction'),
+    isObjectLike = require('./isObjectLike'),
+    keys = require('../object/keys'),
+    size = require('../collection/size');
 
 /**
  * Checks if `value` is empty. A value is considered empty unless it's an
@@ -34,14 +31,9 @@ var isArguments = require('./isArguments'),
  * // => false
  */
 function isEmpty(value) {
-  if (value == null) {
-    return true;
-  }
-  if (isArrayLike(value) && (isArray(value) || isString(value) || isArguments(value) ||
-      (isObjectLike(value) && isFunction(value.splice)))) {
-    return !value.length;
-  }
-  return !keys(value).length;
+  return (!isObjectLike(value) || isFunction(value.splice))
+    ? !size(value)
+    : !keys(value).length;
 }
 
 module.exports = isEmpty;

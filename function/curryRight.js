@@ -1,4 +1,4 @@
-var createCurry = require('../internal/createCurry');
+var createWrapper = require('../internal/createWrapper');
 
 /** Used to compose bitmasks for wrapper metadata. */
 var CURRY_RIGHT_FLAG = 16;
@@ -10,14 +10,14 @@ var CURRY_RIGHT_FLAG = 16;
  * The `_.curryRight.placeholder` value, which defaults to `_` in monolithic
  * builds, may be used as a placeholder for provided arguments.
  *
- * **Note:** This method does not set the "length" property of curried functions.
+ * **Note:** This method doesn't set the "length" property of curried functions.
  *
  * @static
  * @memberOf _
  * @category Function
  * @param {Function} func The function to curry.
  * @param {number} [arity=func.length] The arity of `func`.
- * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+ * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
  * @returns {Function} Returns the new curried function.
  * @example
  *
@@ -40,9 +40,11 @@ var CURRY_RIGHT_FLAG = 16;
  * curried(3)(1, _)(2);
  * // => [1, 2, 3]
  */
-var curryRight = createCurry(CURRY_RIGHT_FLAG);
-
-// Assign default placeholders.
-curryRight.placeholder = {};
+function curryRight(func, arity, guard) {
+  arity = guard ? undefined : arity;
+  var result = createWrapper(func, CURRY_RIGHT_FLAG, undefined, undefined, undefined, undefined, undefined, arity);
+  result.placeholder = curryRight.placeholder;
+  return result;
+}
 
 module.exports = curryRight;

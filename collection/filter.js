@@ -1,61 +1,46 @@
 var arrayFilter = require('../internal/arrayFilter'),
-    baseCallback = require('../internal/baseCallback'),
     baseFilter = require('../internal/baseFilter'),
+    baseIteratee = require('../internal/baseIteratee'),
     isArray = require('../lang/isArray');
 
 /**
  * Iterates over elements of `collection`, returning an array of all elements
- * `predicate` returns truthy for. The predicate is bound to `thisArg` and
- * invoked with three arguments: (value, index|key, collection).
- *
- * If a property name is provided for `predicate` the created `_.property`
- * style callback returns the property value of the given element.
- *
- * If a value is also provided for `thisArg` the created `_.matchesProperty`
- * style callback returns `true` for elements that have a matching property
- * value, else `false`.
- *
- * If an object is provided for `predicate` the created `_.matches` style
- * callback returns `true` for elements that have the properties of the given
- * object, else `false`.
+ * `predicate` returns truthy for. The predicate is invoked with three arguments:
+ * (value, index|key, collection).
  *
  * @static
  * @memberOf _
- * @alias select
  * @category Collection
- * @param {Array|Object|string} collection The collection to iterate over.
- * @param {Function|Object|string} [predicate=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
  * @returns {Array} Returns the new filtered array.
  * @example
  *
- * _.filter([4, 5, 6], function(n) {
- *   return n % 2 == 0;
- * });
- * // => [4, 6]
+ * var resolve = _.partial(_.map, _, 'user');
  *
  * var users = [
  *   { 'user': 'barney', 'age': 36, 'active': true },
  *   { 'user': 'fred',   'age': 40, 'active': false }
  * ];
  *
+ * resolve( _.filter(users, function(o) { return !o.active; }) );
+ * // => ['fred']
+ *
  * // using the `_.matches` callback shorthand
- * _.pluck(_.filter(users, { 'age': 36, 'active': true }), 'user');
+ * resolve( _.filter(users, { 'age': 36, 'active': true }) );
  * // => ['barney']
  *
  * // using the `_.matchesProperty` callback shorthand
- * _.pluck(_.filter(users, 'active', false), 'user');
+ * resolve( _.filter(users, ['active', false]) );
  * // => ['fred']
  *
  * // using the `_.property` callback shorthand
- * _.pluck(_.filter(users, 'active'), 'user');
+ * resolve( _.filter(users, 'active') );
  * // => ['barney']
  */
-function filter(collection, predicate, thisArg) {
+function filter(collection, predicate) {
   var func = isArray(collection) ? arrayFilter : baseFilter;
-  predicate = baseCallback(predicate, thisArg, 3);
-  return func(collection, predicate);
+  return func(collection, baseIteratee(predicate, 3));
 }
 
 module.exports = filter;

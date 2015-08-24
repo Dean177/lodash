@@ -1,7 +1,7 @@
-var sample = require('./sample');
+var sampleSize = require('./sampleSize');
 
-/** Used as references for `-Infinity` and `Infinity`. */
-var POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
+/** Used as references for the maximum length and index of an array. */
+var MAX_ARRAY_LENGTH = 4294967295;
 
 /**
  * Creates an array of shuffled values, using a version of the
@@ -10,7 +10,7 @@ var POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
  * @static
  * @memberOf _
  * @category Collection
- * @param {Array|Object|string} collection The collection to shuffle.
+ * @param {Array|Object} collection The collection to shuffle.
  * @returns {Array} Returns the new shuffled array.
  * @example
  *
@@ -18,7 +18,7 @@ var POSITIVE_INFINITY = Number.POSITIVE_INFINITY;
  * // => [4, 1, 3, 2]
  */
 function shuffle(collection) {
-  return sample(collection, POSITIVE_INFINITY);
+  return sampleSize(collection, MAX_ARRAY_LENGTH);
 }
 
 module.exports = shuffle;

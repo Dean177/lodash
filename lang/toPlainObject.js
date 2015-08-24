@@ -1,4 +1,4 @@
-var baseCopy = require('../internal/baseCopy'),
+var copyObject = require('../internal/copyObject'),
     keysIn = require('../object/keysIn');
 
 /**
@@ -25,7 +25,7 @@ var baseCopy = require('../internal/baseCopy'),
  * // => { 'a': 1, 'b': 2, 'c': 3 }
  */
 function toPlainObject(value) {
-  return baseCopy(value, keysIn(value));
+  return copyObject(value, keysIn(value));
 }
 
 module.exports = toPlainObject;

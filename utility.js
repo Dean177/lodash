@@ -1,7 +1,9 @@
 module.exports = {
   'attempt': require('./utility/attempt'),
-  'callback': require('./utility/callback'),
+  'conforms': require('./utility/conforms'),
   'constant': require('./utility/constant'),
+  'flow': require('./utility/flow'),
+  'flowRight': require('./utility/flowRight'),
   'identity': require('./utility/identity'),
   'iteratee': require('./utility/iteratee'),
   'matches': require('./utility/matches'),
@@ -10,9 +12,15 @@ module.exports = {
   'methodOf': require('./utility/methodOf'),
   'mixin': require('./utility/mixin'),
   'noop': require('./utility/noop'),
+  'nthArg': require('./utility/nthArg'),
+  'over': require('./utility/over'),
+  'overEvery': require('./utility/overEvery'),
+  'overSome': require('./utility/overSome'),
   'property': require('./utility/property'),
   'propertyOf': require('./utility/propertyOf'),
   'range': require('./utility/range'),
+  'rangeRight': require('./utility/rangeRight'),
   'times': require('./utility/times'),
+  'toPath': require('./utility/toPath'),
   'uniqueId': require('./utility/uniqueId')
 };

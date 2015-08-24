@@ -1,6 +1,6 @@
-var arrayCopy = require('./arrayCopy'),
-    composeArgs = require('./composeArgs'),
+var composeArgs = require('./composeArgs'),
     composeArgsRight = require('./composeArgsRight'),
+    copyArray = require('./copyArray'),
     replaceHolders = require('./replaceHolders');
 
 /** Used to compose bitmasks for wrapper metadata. */
@@ -13,16 +13,16 @@ var BIND_FLAG = 1,
 /** Used as the internal argument placeholder. */
 var PLACEHOLDER = '__lodash_placeholder__';
 
-/* Native method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMin = Math.min;
 
 /**
  * Merges the function metadata of `source` into `data`.
  *
- * Merging metadata reduces the number of wrappers required to invoke a function.
+ * Merging metadata reduces the number of wrappers used to invoke a function.
  * This is possible because methods like `_.bind`, `_.curry`, and `_.partial`
  * may be applied regardless of execution order. Methods like `_.ary` and `_.rearg`
- * augment function arguments, making the order in which they are executed important,
+ * modify function arguments, making the order in which they are executed important,
  * preventing the merging of metadata. However, we make an exception for a safe
  * common case where curried functions have `_.ary` and or `_.rearg` applied.
  *
@@ -38,9 +38,9 @@ function mergeData(data, source) {
       isCommon = newBitmask < ARY_FLAG;
 
   var isCombo =
-    (srcBitmask == ARY_FLAG && bitmask == CURRY_FLAG) ||
-    (srcBitmask == ARY_FLAG && bitmask == REARG_FLAG && data[7].length <= source[8]) ||
-    (srcBitmask == (ARY_FLAG | REARG_FLAG) && bitmask == CURRY_FLAG);
+    (srcBitmask == ARY_FLAG && (bitmask == CURRY_FLAG)) ||
+    (srcBitmask == ARY_FLAG && (bitmask == REARG_FLAG) && (data[7].length <= source[8])) ||
+    (srcBitmask == (ARY_FLAG | REARG_FLAG) && (source[7].length <= source[8]) && (bitmask == CURRY_FLAG));
 
   // Exit early if metadata can't be merged.
   if (!(isCommon || isCombo)) {
@@ -56,20 +56,20 @@ function mergeData(data, source) {
   var value = source[3];
   if (value) {
     var partials = data[3];
-    data[3] = partials ? composeArgs(partials, value, source[4]) : arrayCopy(value);
-    data[4] = partials ? replaceHolders(data[3], PLACEHOLDER) : arrayCopy(source[4]);
+    data[3] = partials ? composeArgs(partials, value, source[4]) : copyArray(value);
+    data[4] = partials ? replaceHolders(data[3], PLACEHOLDER) : copyArray(source[4]);
   }
   // Compose partial right arguments.
   value = source[5];
   if (value) {
     partials = data[5];
-    data[5] = partials ? composeArgsRight(partials, value, source[6]) : arrayCopy(value);
-    data[6] = partials ? replaceHolders(data[5], PLACEHOLDER) : arrayCopy(source[6]);
+    data[5] = partials ? composeArgsRight(partials, value, source[6]) : copyArray(value);
+    data[6] = partials ? replaceHolders(data[5], PLACEHOLDER) : copyArray(source[6]);
   }
   // Use source `argPos` if available.
   value = source[7];
   if (value) {
-    data[7] = arrayCopy(value);
+    data[7] = copyArray(value);
   }
   // Use source `ary` if it's smaller.
   if (srcBitmask & ARY_FLAG) {

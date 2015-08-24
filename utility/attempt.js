@@ -1,5 +1,6 @@
-var isError = require('../lang/isError'),
-    restParam = require('../function/restParam');
+var apply = require('../internal/apply'),
+    isError = require('../lang/isError'),
+    rest = require('../function/rest');
 
 /**
  * Attempts to invoke `func`, returning either the result or the caught error
@@ -21,10 +22,10 @@ var isError = require('../lang/isError'),
  *   elements = [];
  * }
  */
-var attempt = restParam(function(func, args) {
+var attempt = rest(function(func, args) {
   try {
-    return func.apply(undefined, args);
-  } catch(e) {
+    return apply(func, undefined, args);
+  } catch (e) {
     return isError(e) ? e : new Error(e);
   }
 });

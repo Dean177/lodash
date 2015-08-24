@@ -2,8 +2,7 @@ var baseValues = require('../internal/baseValues'),
     keysIn = require('./keysIn');
 
 /**
- * Creates an array of the own and inherited enumerable property values
- * of `object`.
+ * Creates an array of the own and inherited enumerable property values of `object`.
  *
  * **Note:** Non-object values are coerced to objects.
  *
@@ -25,7 +24,7 @@ var baseValues = require('../internal/baseValues'),
  * // => [1, 2, 3] (iteration order is not guaranteed)
  */
 function valuesIn(object) {
-  return baseValues(object, keysIn(object));
+  return object == null ? baseValues(object, keysIn(object)) : [];
 }
 
 module.exports = valuesIn;

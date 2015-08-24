@@ -1,6 +1,6 @@
 var createWrapper = require('../internal/createWrapper'),
     replaceHolders = require('../internal/replaceHolders'),
-    restParam = require('./restParam');
+    rest = require('./rest');
 
 /** Used to compose bitmasks for wrapper metadata. */
 var BIND_FLAG = 1,
@@ -14,7 +14,7 @@ var BIND_FLAG = 1,
  * The `_.bind.placeholder` value, which defaults to `_` in monolithic builds,
  * may be used as a placeholder for partially applied arguments.
  *
- * **Note:** Unlike native `Function#bind` this method does not set the "length"
+ * **Note:** Unlike native `Function#bind` this method doesn't set the "length"
  * property of bound functions.
  *
  * @static
@@ -41,7 +41,7 @@ var BIND_FLAG = 1,
  * bound('hi');
  * // => 'hi fred!'
  */
-var bind = restParam(function(func, thisArg, partials) {
+var bind = rest(function(func, thisArg, partials) {
   var bitmask = BIND_FLAG;
   if (partials.length) {
     var holders = replaceHolders(partials, bind.placeholder);
@@ -49,8 +49,5 @@ var bind = restParam(function(func, thisArg, partials) {
   }
   return createWrapper(func, bitmask, thisArg, partials, holders);
 });
-
-// Assign default placeholders.
-bind.placeholder = {};
 
 module.exports = bind;

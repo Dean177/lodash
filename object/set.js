@@ -1,16 +1,15 @@
-var isIndex = require('../internal/isIndex'),
-    isKey = require('../internal/isKey'),
-    isObject = require('../lang/isObject'),
-    toPath = require('../internal/toPath');
+var baseSet = require('../internal/baseSet');
 
 /**
- * Sets the property value of `path` on `object`. If a portion of `path`
- * does not exist it's created.
+ * Sets the value at `path` of `object`. If a portion of `path` doesn't exist
+ * it's created. Arrays are created for missing index properties while objects
+ * are created for all other missing properties. Use `_.setWith` to customize
+ * `path` creation.
  *
  * @static
  * @memberOf _
  * @category Object
- * @param {Object} object The object to augment.
+ * @param {Object} object The object to modify.
  * @param {Array|string} path The path of the property to set.
  * @param {*} value The value to set.
  * @returns {Object} Returns `object`.
@@ -27,29 +26,7 @@ var isIndex = require('../internal/isIndex'),
  * // => 5
  */
 function set(object, path, value) {
-  if (object == null) {
-    return object;
-  }
-  var pathKey = (path + '');
-  path = (object[pathKey] != null || isKey(path, object)) ? [pathKey] : toPath(path);
-
-  var index = -1,
-      length = path.length,
-      lastIndex = length - 1,
-      nested = object;
-
-  while (nested != null && ++index < length) {
-    var key = path[index];
-    if (isObject(nested)) {
-      if (index == lastIndex) {
-        nested[key] = value;
-      } else if (nested[key] == null) {
-        nested[key] = isIndex(path[index + 1]) ? [] : {};
-      }
-    }
-    nested = nested[key];
-  }
-  return object;
+  return object == null ? object : baseSet(object, path, value);
 }
 
 module.exports = set;

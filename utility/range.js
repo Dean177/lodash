@@ -1,14 +1,15 @@
-var isIterateeCall = require('../internal/isIterateeCall');
-
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeCeil = Math.ceil,
-    nativeMax = Math.max;
+var baseRange = require('../internal/baseRange'),
+    isIterateeCall = require('../internal/isIterateeCall');
 
 /**
  * Creates an array of numbers (positive and/or negative) progressing from
- * `start` up to, but not including, `end`. If `end` is not specified it's
- * set to `start` with `start` then set to `0`. If `end` is less than `start`
- * a zero-length range is created unless a negative `step` is specified.
+ * `start` up to, but not including, `end`. A step of `-1` is used if a negative
+ * `start` is specified without an `end` or `step`. If `end` is not specified
+ * it's set to `start` with `start` then set to `0`.  If `end` is less than
+ * `start` a zero-length range is created unless a negative `step` is specified.
+ *
+ * **Note:** JavaScript follows the IEEE-754 standard for resolving
+ * floating-point values which can produce unexpected results.
  *
  * @static
  * @memberOf _
@@ -21,6 +22,9 @@ var nativeCeil = Math.ceil,
  *
  * _.range(4);
  * // => [0, 1, 2, 3]
+ *
+ * _.range(-4);
+ * // => [0, -1, -2, -3]
  *
  * _.range(1, 5);
  * // => [1, 2, 3, 4]
@@ -41,26 +45,7 @@ function range(start, end, step) {
   if (step && isIterateeCall(start, end, step)) {
     end = step = undefined;
   }
-  start = +start || 0;
-  step = step == null ? 1 : (+step || 0);
-
-  if (end == null) {
-    end = start;
-    start = 0;
-  } else {
-    end = +end || 0;
-  }
-  // Use `Array(length)` so engines like Chakra and V8 avoid slower modes.
-  // See https://youtu.be/XAqIpGU8ZZk#t=17m25s for more details.
-  var index = -1,
-      length = nativeMax(nativeCeil((end - start) / (step || 1)), 0),
-      result = Array(length);
-
-  while (++index < length) {
-    result[index] = start;
-    start += step;
-  }
-  return result;
+  return baseRange(start, end, step);
 }
 
 module.exports = range;

@@ -1,8 +1,11 @@
-var baseToString = require('../internal/baseToString');
+var toInteger = require('../lang/toInteger'),
+    toString = require('../lang/toString');
 
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeFloor = Math.floor,
-    nativeIsFinite = global.isFinite;
+/** Used as references for various `Number` constants. */
+var MAX_SAFE_INTEGER = 9007199254740991;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeFloor = Math.floor;
 
 /**
  * Repeats the given string `n` times.
@@ -25,10 +28,11 @@ var nativeFloor = Math.floor,
  * // => ''
  */
 function repeat(string, n) {
+  string = toString(string);
+  n = toInteger(n);
+
   var result = '';
-  string = baseToString(string);
-  n = +n;
-  if (n < 1 || !string || !nativeIsFinite(n)) {
+  if (!string || n < 1 || n > MAX_SAFE_INTEGER) {
     return result;
   }
   // Leverage the exponentiation by squaring algorithm for a faster repeat.

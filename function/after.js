@@ -1,8 +1,7 @@
+var toInteger = require('../lang/toInteger');
+
 /** Used as the `TypeError` message for "Functions" methods. */
 var FUNC_ERROR_TEXT = 'Expected a function';
-
-/* Native method references for those with the same name as other `lodash` methods. */
-var nativeIsFinite = global.isFinite;
 
 /**
  * The opposite of `_.before`; this method creates a function that invokes
@@ -29,15 +28,9 @@ var nativeIsFinite = global.isFinite;
  */
 function after(n, func) {
   if (typeof func != 'function') {
-    if (typeof n == 'function') {
-      var temp = n;
-      n = func;
-      func = temp;
-    } else {
-      throw new TypeError(FUNC_ERROR_TEXT);
-    }
+    throw new TypeError(FUNC_ERROR_TEXT);
   }
-  n = nativeIsFinite(n = +n) ? n : 0;
+  n = toInteger(n);
   return function() {
     if (--n < 1) {
       return func.apply(this, arguments);

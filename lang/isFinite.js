@@ -1,4 +1,4 @@
-/* Native method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeIsFinite = global.isFinite;
 
 /**
@@ -13,17 +13,14 @@ var nativeIsFinite = global.isFinite;
  * @returns {boolean} Returns `true` if `value` is a finite number, else `false`.
  * @example
  *
- * _.isFinite(10);
+ * _.isFinite(3);
  * // => true
  *
- * _.isFinite('10');
- * // => false
+ * _.isFinite(Number.MAX_VALUE);
+ * // => true
  *
- * _.isFinite(true);
- * // => false
- *
- * _.isFinite(Object(10));
- * // => false
+ * _.isFinite(3.14);
+ * // => true
  *
  * _.isFinite(Infinity);
  * // => false

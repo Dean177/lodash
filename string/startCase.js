@@ -1,4 +1,5 @@
-var createCompounder = require('../internal/createCompounder');
+var capitalize = require('./capitalize'),
+    createCompounder = require('../internal/createCompounder');
 
 /**
  * Converts `string` to [start case](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage).
@@ -20,7 +21,7 @@ var createCompounder = require('../internal/createCompounder');
  * // => 'Foo Bar'
  */
 var startCase = createCompounder(function(result, word, index) {
-  return result + (index ? ' ' : '') + (word.charAt(0).toUpperCase() + word.slice(1));
+  return result + (index ? ' ' : '') + capitalize(word);
 });
 
 module.exports = startCase;

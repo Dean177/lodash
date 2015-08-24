@@ -1,8 +1,8 @@
-var isObjectLike = require('../internal/isObjectLike'),
+var isObjectLike = require('./isObjectLike'),
     isPlainObject = require('./isPlainObject');
 
 /**
- * Checks if `value` is a DOM element.
+ * Checks if `value` is likely a DOM element.
  *
  * @static
  * @memberOf _

@@ -1,71 +1,54 @@
-var baseCallback = require('../internal/baseCallback'),
-    baseMap = require('../internal/baseMap'),
-    baseSortBy = require('../internal/baseSortBy'),
-    compareAscending = require('../internal/compareAscending'),
-    isIterateeCall = require('../internal/isIterateeCall');
+var baseFlatten = require('../internal/baseFlatten'),
+    baseSortByOrder = require('../internal/baseSortByOrder'),
+    isIterateeCall = require('../internal/isIterateeCall'),
+    rest = require('../function/rest');
 
 /**
  * Creates an array of elements, sorted in ascending order by the results of
- * running each element in a collection through `iteratee`. This method performs
- * a stable sort, that is, it preserves the original sort order of equal elements.
- * The `iteratee` is bound to `thisArg` and invoked with three arguments:
- * (value, index|key, collection).
- *
- * If a property name is provided for `iteratee` the created `_.property`
- * style callback returns the property value of the given element.
- *
- * If a value is also provided for `thisArg` the created `_.matchesProperty`
- * style callback returns `true` for elements that have a matching property
- * value, else `false`.
- *
- * If an object is provided for `iteratee` the created `_.matches` style
- * callback returns `true` for elements that have the properties of the given
- * object, else `false`.
+ * running each element in a collection through each iteratee. This method
+ * performs a stable sort, that is, it preserves the original sort order of
+ * equal elements. The iteratees are invoked with one argument: (value).
  *
  * @static
  * @memberOf _
  * @category Collection
- * @param {Array|Object|string} collection The collection to iterate over.
- * @param {Function|Object|string} [iteratee=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `iteratee`.
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {...(Function|Function[]|Object|Object[]|string|string[])} [iteratees=[_.identity]]
+ *  The iteratees to sort by, specified individually or in arrays.
  * @returns {Array} Returns the new sorted array.
  * @example
  *
- * _.sortBy([1, 2, 3], function(n) {
- *   return Math.sin(n);
- * });
- * // => [3, 1, 2]
- *
- * _.sortBy([1, 2, 3], function(n) {
- *   return this.sin(n);
- * }, Math);
- * // => [3, 1, 2]
+ * var resolve = _.partial(_.map, _, _.values);
  *
  * var users = [
- *   { 'user': 'fred' },
- *   { 'user': 'pebbles' },
- *   { 'user': 'barney' }
+ *   { 'user': 'fred',   'age': 48 },
+ *   { 'user': 'barney', 'age': 36 },
+ *   { 'user': 'fred',   'age': 42 },
+ *   { 'user': 'barney', 'age': 34 }
  * ];
  *
- * // using the `_.property` callback shorthand
- * _.pluck(_.sortBy(users, 'user'), 'user');
- * // => ['barney', 'fred', 'pebbles']
+ * resolve( _.sortBy(users, function(o) { return o.user; }) );
+ * // => // => [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 42]]
+ *
+ * resolve( _.sortBy(users, ['user', 'age']) );
+ * // => [['barney', 34], ['barney', 36], ['fred', 42], ['fred', 48]]
+ *
+ * resolve( _.sortBy(users, 'user', function(o) {
+ *   return Math.floor(o.age / 10);
+ * }) );
+ * // => [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 42]]
  */
-function sortBy(collection, iteratee, thisArg) {
+var sortBy = rest(function(collection, iteratees) {
   if (collection == null) {
     return [];
   }
-  if (thisArg && isIterateeCall(collection, iteratee, thisArg)) {
-    iteratee = undefined;
+  var length = iteratees.length;
+  if (length > 1 && isIterateeCall(collection, iteratees[0], iteratees[1])) {
+    iteratees = [];
+  } else if (length > 2 && isIterateeCall(iteratees[0], iteratees[1], iteratees[2])) {
+    iteratees.length = 1;
   }
-  var index = -1;
-  iteratee = baseCallback(iteratee, thisArg, 3);
-
-  var result = baseMap(collection, function(value, key, collection) {
-    return { 'criteria': iteratee(value, key, collection), 'index': ++index, 'value': value };
-  });
-  return baseSortBy(result, compareAscending);
-}
+  return baseSortByOrder(collection, baseFlatten(iteratees), []);
+});
 
 module.exports = sortBy;

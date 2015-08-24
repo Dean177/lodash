@@ -1,4 +1,4 @@
-var isArrayLike = require('./isArrayLike'),
+var isArrayLike = require('../lang/isArrayLike'),
     isIndex = require('./isIndex'),
     isObject = require('../lang/isObject');
 

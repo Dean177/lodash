@@ -1,5 +1,6 @@
 var baseForRight = require('../internal/baseForRight'),
-    createForIn = require('../internal/createForIn');
+    keysIn = require('./keysIn'),
+    toFunction = require('../internal/toFunction');
 
 /**
  * This method is like `_.forIn` except that it iterates over properties of
@@ -10,7 +11,6 @@ var baseForRight = require('../internal/baseForRight'),
  * @category Object
  * @param {Object} object The object to iterate over.
  * @param {Function} [iteratee=_.identity] The function invoked per iteration.
- * @param {*} [thisArg] The `this` binding of `iteratee`.
  * @returns {Object} Returns `object`.
  * @example
  *
@@ -24,8 +24,10 @@ var baseForRight = require('../internal/baseForRight'),
  * _.forInRight(new Foo, function(value, key) {
  *   console.log(key);
  * });
- * // => logs 'c', 'b', and 'a' assuming `_.forIn ` logs 'a', 'b', and 'c'
+ * // => logs 'c', 'b', then 'a' assuming `_.forIn` logs 'a', 'b', then 'c'
  */
-var forInRight = createForIn(baseForRight);
+function forInRight(object, iteratee) {
+  return object == null ? object : baseForRight(object, toFunction(iteratee), keysIn);
+}
 
 module.exports = forInRight;

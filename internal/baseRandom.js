@@ -1,10 +1,10 @@
-/* Native method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeFloor = Math.floor,
     nativeRandom = Math.random;
 
 /**
- * The base implementation of `_.random` without support for argument juggling
- * and returning floating-point numbers.
+ * The base implementation of `_.random` without support for returning
+ * floating-point numbers.
  *
  * @private
  * @param {number} min The minimum possible value.

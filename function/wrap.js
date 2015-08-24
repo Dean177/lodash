@@ -1,8 +1,5 @@
-var createWrapper = require('../internal/createWrapper'),
-    identity = require('../utility/identity');
-
-/** Used to compose bitmasks for wrapper metadata. */
-var PARTIAL_FLAG = 32;
+var identity = require('../utility/identity'),
+    partial = require('./partial');
 
 /**
  * Creates a function that provides `value` to the wrapper function as its
@@ -27,7 +24,7 @@ var PARTIAL_FLAG = 32;
  */
 function wrap(value, wrapper) {
   wrapper = wrapper == null ? identity : wrapper;
-  return createWrapper(wrapper, PARTIAL_FLAG, undefined, [value], []);
+  return partial(wrapper, value);
 }
 
 module.exports = wrap;

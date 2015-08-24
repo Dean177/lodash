@@ -1,6 +1,7 @@
-var getLength = require('../internal/getLength'),
-    isLength = require('../internal/isLength'),
-    keys = require('../object/keys');
+var isArrayLike = require('../lang/isArrayLike'),
+    isString = require('../lang/isString'),
+    keys = require('../object/keys'),
+    stringSize = require('../internal/stringSize');
 
 /**
  * Gets the size of `collection` by returning its length for array-like
@@ -9,8 +10,8 @@ var getLength = require('../internal/getLength'),
  * @static
  * @memberOf _
  * @category Collection
- * @param {Array|Object|string} collection The collection to inspect.
- * @returns {number} Returns the size of `collection`.
+ * @param {Array|Object} collection The collection to inspect.
+ * @returns {number} Returns the collection size.
  * @example
  *
  * _.size([1, 2, 3]);
@@ -23,8 +24,14 @@ var getLength = require('../internal/getLength'),
  * // => 7
  */
 function size(collection) {
-  var length = collection ? getLength(collection) : 0;
-  return isLength(length) ? length : keys(collection).length;
+  if (collection == null) {
+    return 0;
+  }
+  if (isArrayLike(collection)) {
+    var result = collection.length;
+    return (result && isString(collection)) ? stringSize(collection) : result;
+  }
+  return keys(collection).length;
 }
 
 module.exports = size;

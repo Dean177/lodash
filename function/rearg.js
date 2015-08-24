@@ -1,6 +1,6 @@
 var baseFlatten = require('../internal/baseFlatten'),
     createWrapper = require('../internal/createWrapper'),
-    restParam = require('./restParam');
+    rest = require('./rest');
 
 /** Used to compose bitmasks for wrapper metadata. */
 var REARG_FLAG = 256;
@@ -16,7 +16,7 @@ var REARG_FLAG = 256;
  * @category Function
  * @param {Function} func The function to rearrange arguments for.
  * @param {...(number|number[])} indexes The arranged argument indexes,
- *  specified as individual indexes or arrays of indexes.
+ *  specified individually or in arrays.
  * @returns {Function} Returns the new function.
  * @example
  *
@@ -26,14 +26,8 @@ var REARG_FLAG = 256;
  *
  * rearged('b', 'c', 'a')
  * // => ['a', 'b', 'c']
- *
- * var map = _.rearg(_.map, [1, 0]);
- * map(function(n) {
- *   return n * 3;
- * }, [1, 2, 3]);
- * // => [3, 6, 9]
  */
-var rearg = restParam(function(func, indexes) {
+var rearg = rest(function(func, indexes) {
   return createWrapper(func, REARG_FLAG, undefined, undefined, undefined, baseFlatten(indexes));
 });
 

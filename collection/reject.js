@@ -1,6 +1,6 @@
 var arrayFilter = require('../internal/arrayFilter'),
-    baseCallback = require('../internal/baseCallback'),
     baseFilter = require('../internal/baseFilter'),
+    baseIteratee = require('../internal/baseIteratee'),
     isArray = require('../lang/isArray');
 
 /**
@@ -10,38 +10,36 @@ var arrayFilter = require('../internal/arrayFilter'),
  * @static
  * @memberOf _
  * @category Collection
- * @param {Array|Object|string} collection The collection to iterate over.
- * @param {Function|Object|string} [predicate=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @param {Array|Object} collection The collection to iterate over.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
  * @returns {Array} Returns the new filtered array.
  * @example
  *
- * _.reject([1, 2, 3, 4], function(n) {
- *   return n % 2 == 0;
- * });
- * // => [1, 3]
+ * var resolve = _.partial(_.map, _, 'user');
  *
  * var users = [
  *   { 'user': 'barney', 'age': 36, 'active': false },
  *   { 'user': 'fred',   'age': 40, 'active': true }
  * ];
  *
+ * resolve( _.reject(users, function(o) { return !o.active; }) );
+ * // => ['fred']
+ *
  * // using the `_.matches` callback shorthand
- * _.pluck(_.reject(users, { 'age': 40, 'active': true }), 'user');
+ * resolve( _.reject(users, { 'age': 40, 'active': true }) );
  * // => ['barney']
  *
  * // using the `_.matchesProperty` callback shorthand
- * _.pluck(_.reject(users, 'active', false), 'user');
+ * resolve( _.reject(users, ['active', false]) );
  * // => ['fred']
  *
  * // using the `_.property` callback shorthand
- * _.pluck(_.reject(users, 'active'), 'user');
+ * resolve( _.reject(users, 'active') );
  * // => ['barney']
  */
-function reject(collection, predicate, thisArg) {
+function reject(collection, predicate) {
   var func = isArray(collection) ? arrayFilter : baseFilter;
-  predicate = baseCallback(predicate, thisArg, 3);
+  predicate = baseIteratee(predicate, 3);
   return func(collection, function(value, index, collection) {
     return !predicate(value, index, collection);
   });

@@ -2,21 +2,20 @@ var baseMerge = require('../internal/baseMerge'),
     createAssigner = require('../internal/createAssigner');
 
 /**
- * Recursively merges own enumerable properties of the source object(s), that
- * don't resolve to `undefined` into the destination object. Subsequent sources
- * overwrite property assignments of previous sources. If `customizer` is
- * provided it's invoked to produce the merged values of the destination and
- * source properties. If `customizer` returns `undefined` merging is handled
- * by the method instead. The `customizer` is bound to `thisArg` and invoked
- * with five arguments: (objectValue, sourceValue, key, object, source).
+ * Recursively merges own and inherited enumerable properties of source
+ * objects into the destination object, skipping source properties that resolve
+ * to `undefined`. Array and plain object properties are merged recursively.
+ * Other objects and value types are overriden by assignment. Source objects
+ * are applied from left to right. Subsequent sources overwrite property
+ * assignments of previous sources.
+ *
+ * **Note:** This method mutates `object`.
  *
  * @static
  * @memberOf _
  * @category Object
  * @param {Object} object The destination object.
  * @param {...Object} [sources] The source objects.
- * @param {Function} [customizer] The function to customize assigned values.
- * @param {*} [thisArg] The `this` binding of `customizer`.
  * @returns {Object} Returns `object`.
  * @example
  *
@@ -30,25 +29,9 @@ var baseMerge = require('../internal/baseMerge'),
  *
  * _.merge(users, ages);
  * // => { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
- *
- * // using a customizer callback
- * var object = {
- *   'fruits': ['apple'],
- *   'vegetables': ['beet']
- * };
- *
- * var other = {
- *   'fruits': ['banana'],
- *   'vegetables': ['carrot']
- * };
- *
- * _.merge(object, other, function(a, b) {
- *   if (_.isArray(a)) {
- *     return a.concat(b);
- *   }
- * });
- * // => { 'fruits': ['apple', 'banana'], 'vegetables': ['beet', 'carrot'] }
  */
-var merge = createAssigner(baseMerge);
+var merge = createAssigner(function(object, source) {
+  baseMerge(object, source);
+});
 
 module.exports = merge;

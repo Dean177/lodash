@@ -1,36 +1,20 @@
-var baseCallback = require('../internal/baseCallback'),
+var baseIteratee = require('../internal/baseIteratee'),
     baseWhile = require('../internal/baseWhile');
 
 /**
  * Creates a slice of `array` excluding elements dropped from the end.
  * Elements are dropped until `predicate` returns falsey. The predicate is
- * bound to `thisArg` and invoked with three arguments: (value, index, array).
- *
- * If a property name is provided for `predicate` the created `_.property`
- * style callback returns the property value of the given element.
- *
- * If a value is also provided for `thisArg` the created `_.matchesProperty`
- * style callback returns `true` for elements that have a matching property
- * value, else `false`.
- *
- * If an object is provided for `predicate` the created `_.matches` style
- * callback returns `true` for elements that match the properties of the given
- * object, else `false`.
+ * invoked with three arguments: (value, index, array).
  *
  * @static
  * @memberOf _
  * @category Array
  * @param {Array} array The array to query.
- * @param {Function|Object|string} [predicate=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
  * @returns {Array} Returns the slice of `array`.
  * @example
  *
- * _.dropRightWhile([1, 2, 3], function(n) {
- *   return n > 1;
- * });
- * // => [1]
+ * var resolve = _.partial(_.map, _, 'user');
  *
  * var users = [
  *   { 'user': 'barney',  'active': true },
@@ -38,21 +22,24 @@ var baseCallback = require('../internal/baseCallback'),
  *   { 'user': 'pebbles', 'active': false }
  * ];
  *
+ * resolve( _.dropRightWhile(users, function(o) { return !o.active; }) );
+ * // => ['barney']
+ *
  * // using the `_.matches` callback shorthand
- * _.pluck(_.dropRightWhile(users, { 'user': 'pebbles', 'active': false }), 'user');
+ * resolve( _.dropRightWhile(users, { 'user': 'pebbles', 'active': false }) );
  * // => ['barney', 'fred']
  *
  * // using the `_.matchesProperty` callback shorthand
- * _.pluck(_.dropRightWhile(users, 'active', false), 'user');
+ * resolve( _.dropRightWhile(users, ['active', false]) );
  * // => ['barney']
  *
  * // using the `_.property` callback shorthand
- * _.pluck(_.dropRightWhile(users, 'active'), 'user');
+ * resolve( _.dropRightWhile(users, 'active') );
  * // => ['barney', 'fred', 'pebbles']
  */
-function dropRightWhile(array, predicate, thisArg) {
+function dropRightWhile(array, predicate) {
   return (array && array.length)
-    ? baseWhile(array, baseCallback(predicate, thisArg, 3), true, true)
+    ? baseWhile(array, baseIteratee(predicate, 3), true, true)
     : [];
 }
 

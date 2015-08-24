@@ -1,29 +1,29 @@
 var baseAt = require('../internal/baseAt'),
     baseFlatten = require('../internal/baseFlatten'),
-    restParam = require('../function/restParam');
+    rest = require('../function/rest');
 
 /**
- * Creates an array of elements corresponding to the given keys, or indexes,
- * of `collection`. Keys may be specified as individual arguments or as arrays
- * of keys.
+ * Creates an array of values corresponding to `paths` of `object`.
  *
  * @static
  * @memberOf _
- * @category Collection
- * @param {Array|Object|string} collection The collection to iterate over.
- * @param {...(number|number[]|string|string[])} [props] The property names
- *  or indexes of elements to pick, specified individually or in arrays.
+ * @category Object
+ * @param {Object} object The object to iterate over.
+ * @param {...(string|string[])} [paths] The property paths of elements to pick,
+ *  specified individually or in arrays.
  * @returns {Array} Returns the new array of picked elements.
  * @example
  *
- * _.at(['a', 'b', 'c'], [0, 2]);
- * // => ['a', 'c']
+ * var object = { 'a': [{ 'b': { 'c': 3 } }, 4] };
  *
- * _.at(['barney', 'fred', 'pebbles'], 0, 2);
- * // => ['barney', 'pebbles']
+ * _.at(object, ['a[0].b.c', 'a[1]']);
+ * // => [3, 4]
+ *
+ * _.at(['a', 'b', 'c'], 0, 2);
+ * // => ['a', 'c']
  */
-var at = restParam(function(collection, props) {
-  return baseAt(collection, baseFlatten(props));
+var at = rest(function(object, paths) {
+  return baseAt(object, baseFlatten(paths));
 });
 
 module.exports = at;

@@ -1,32 +1,23 @@
 var baseEach = require('../internal/baseEach'),
-    createFind = require('../internal/createFind');
+    baseFind = require('../internal/baseFind'),
+    baseFindIndex = require('../internal/baseFindIndex'),
+    baseIteratee = require('../internal/baseIteratee'),
+    isArray = require('../lang/isArray');
 
 /**
  * Iterates over elements of `collection`, returning the first element
- * `predicate` returns truthy for. The predicate is bound to `thisArg` and
- * invoked with three arguments: (value, index|key, collection).
- *
- * If a property name is provided for `predicate` the created `_.property`
- * style callback returns the property value of the given element.
- *
- * If a value is also provided for `thisArg` the created `_.matchesProperty`
- * style callback returns `true` for elements that have a matching property
- * value, else `false`.
- *
- * If an object is provided for `predicate` the created `_.matches` style
- * callback returns `true` for elements that have the properties of the given
- * object, else `false`.
+ * `predicate` returns truthy for. The predicate is invoked with three arguments:
+ * (value, index|key, collection).
  *
  * @static
  * @memberOf _
- * @alias detect
  * @category Collection
- * @param {Array|Object|string} collection The collection to search.
- * @param {Function|Object|string} [predicate=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @param {Array|Object} collection The collection to search.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
  * @returns {*} Returns the matched element, else `undefined`.
  * @example
+ *
+ * var resolve = _.partial(_.result, _, 'user');
  *
  * var users = [
  *   { 'user': 'barney',  'age': 36, 'active': true },
@@ -34,23 +25,28 @@ var baseEach = require('../internal/baseEach'),
  *   { 'user': 'pebbles', 'age': 1,  'active': true }
  * ];
  *
- * _.result(_.find(users, function(chr) {
- *   return chr.age < 40;
- * }), 'user');
+ * resolve( _.find(users, function(o) { return o.age < 40; }) );
  * // => 'barney'
  *
  * // using the `_.matches` callback shorthand
- * _.result(_.find(users, { 'age': 1, 'active': true }), 'user');
+ * resolve( _.find(users, { 'age': 1, 'active': true }) );
  * // => 'pebbles'
  *
  * // using the `_.matchesProperty` callback shorthand
- * _.result(_.find(users, 'active', false), 'user');
+ * resolve( _.find(users, ['active', false]) );
  * // => 'fred'
  *
  * // using the `_.property` callback shorthand
- * _.result(_.find(users, 'active'), 'user');
+ * resolve( _.find(users, 'active') );
  * // => 'barney'
  */
-var find = createFind(baseEach);
+function find(collection, predicate) {
+  predicate = baseIteratee(predicate, 3);
+  if (isArray(collection)) {
+    var index = baseFindIndex(collection, predicate);
+    return index > -1 ? collection[index] : undefined;
+  }
+  return baseFind(collection, predicate, baseEach);
+}
 
 module.exports = find;

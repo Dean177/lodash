@@ -1,3 +1,5 @@
+var toInteger = require('../lang/toInteger');
+
 /** Used as the `TypeError` message for "Functions" methods. */
 var FUNC_ERROR_TEXT = 'Expected a function';
 
@@ -20,14 +22,9 @@ var FUNC_ERROR_TEXT = 'Expected a function';
 function before(n, func) {
   var result;
   if (typeof func != 'function') {
-    if (typeof n == 'function') {
-      var temp = n;
-      n = func;
-      func = temp;
-    } else {
-      throw new TypeError(FUNC_ERROR_TEXT);
-    }
+    throw new TypeError(FUNC_ERROR_TEXT);
   }
+  n = toInteger(n);
   return function() {
     if (--n > 0) {
       result = func.apply(this, arguments);
