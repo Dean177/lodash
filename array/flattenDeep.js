@@ -1,7 +1,7 @@
 import baseFlatten from '../internal/baseFlatten';
 
 /**
- * Recursively flattens a nested array.
+ * This method is like `_.flatten` except that it recursively flattens `array`.
  *
  * @static
  * @memberOf _

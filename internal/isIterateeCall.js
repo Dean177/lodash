@@ -1,4 +1,4 @@
-import isArrayLike from './isArrayLike';
+import isArrayLike from '../lang/isArrayLike';
 import isIndex from './isIndex';
 import isObject from '../lang/isObject';
 

@@ -1,8 +1,6 @@
-import assignOwnDefaults from '../internal/assignOwnDefaults';
-import assignWith from '../internal/assignWith';
+import assignInDefaults from '../internal/assignInDefaults';
+import assignInWith from '../object/assignInWith';
 import attempt from '../utility/attempt';
-import baseAssign from '../internal/baseAssign';
-import baseToString from '../internal/baseToString';
 import baseValues from '../internal/baseValues';
 import escapeStringChar from '../internal/escapeStringChar';
 import isError from '../lang/isError';
@@ -10,6 +8,7 @@ import isIterateeCall from '../internal/isIterateeCall';
 import keys from '../object/keys';
 import reInterpolate from '../internal/reInterpolate';
 import templateSettings from './templateSettings';
+import toString from '../lang/toString';
 
 /** Used to match empty string literals in compiled template source. */
 var reEmptyStringLeading = /\b__p \+= '';/g,
@@ -129,10 +128,10 @@ function template(string, options, otherOptions) {
   if (otherOptions && isIterateeCall(string, options, otherOptions)) {
     options = otherOptions = undefined;
   }
-  string = baseToString(string);
-  options = assignWith(baseAssign({}, otherOptions || options), settings, assignOwnDefaults);
+  string = toString(string);
+  options = assignInWith({}, otherOptions || options, settings, assignInDefaults);
 
-  var imports = assignWith(baseAssign({}, options.imports), settings.imports, assignOwnDefaults),
+  var imports = assignInWith({}, options.imports, settings.imports, assignInDefaults),
       importsKeys = keys(imports),
       importsValues = baseValues(imports, importsKeys);
 
@@ -173,8 +172,8 @@ function template(string, options, otherOptions) {
     }
     index = offset + match.length;
 
-    // The JS engine embedded in Adobe products requires returning the `match`
-    // string in order to produce the correct `offset` value.
+    // The JS engine embedded in Adobe products needs `match` returned in
+    // order to produce the correct `offset` value.
     return match;
   });
 

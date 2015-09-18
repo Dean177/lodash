@@ -1,9 +1,9 @@
-import isObjectLike from '../internal/isObjectLike';
+import isObjectLike from './isObjectLike';
 
 /** `Object#toString` result references. */
 var errorTag = '[object Error]';
 
-/** Used for native method references. */
+/** Used for built-in method references. */
 var objectProto = Object.prototype;
 
 /**
@@ -30,7 +30,8 @@ var objToString = objectProto.toString;
  * // => false
  */
 function isError(value) {
-  return isObjectLike(value) && typeof value.message == 'string' && objToString.call(value) == errorTag;
+  return isObjectLike(value) &&
+    typeof value.message == 'string' && objToString.call(value) == errorTag;
 }
 
 export default isError;

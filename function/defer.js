@@ -1,5 +1,5 @@
 import baseDelay from '../internal/baseDelay';
-import restParam from './restParam';
+import rest from './rest';
 
 /**
  * Defers invoking the `func` until the current call stack has cleared. Any
@@ -9,7 +9,7 @@ import restParam from './restParam';
  * @memberOf _
  * @category Function
  * @param {Function} func The function to defer.
- * @param {...*} [args] The arguments to invoke the function with.
+ * @param {...*} [args] The arguments to invoke `func` with.
  * @returns {number} Returns the timer id.
  * @example
  *
@@ -18,7 +18,7 @@ import restParam from './restParam';
  * }, 'deferred');
  * // logs 'deferred' after one or more milliseconds
  */
-var defer = restParam(function(func, args) {
+var defer = rest(function(func, args) {
   return baseDelay(func, 1, args);
 });
 

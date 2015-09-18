@@ -1,5 +1,5 @@
-import isLength from '../internal/isLength';
-import isObjectLike from '../internal/isObjectLike';
+import isLength from './isLength';
+import isObjectLike from './isObjectLike';
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]',
@@ -42,7 +42,7 @@ typedArrayTags[numberTag] = typedArrayTags[objectTag] =
 typedArrayTags[regexpTag] = typedArrayTags[setTag] =
 typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
 
-/** Used for native method references. */
+/** Used for built-in method references. */
 var objectProto = Object.prototype;
 
 /**

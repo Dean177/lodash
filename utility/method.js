@@ -1,8 +1,8 @@
-import invokePath from '../internal/invokePath';
-import restParam from '../function/restParam';
+import baseInvoke from '../internal/baseInvoke';
+import rest from '../function/rest';
 
 /**
- * Creates a function that invokes the method at `path` on a given object.
+ * Creates a function that invokes the method at `path` of a given object.
  * Any additional arguments are provided to the invoked method.
  *
  * @static
@@ -21,12 +21,12 @@ import restParam from '../function/restParam';
  * _.map(objects, _.method('a.b.c'));
  * // => [2, 1]
  *
- * _.invoke(_.sortBy(objects, _.method(['a', 'b', 'c'])), 'a.b.c');
+ * _.invokeMap(_.sortBy(objects, _.method(['a', 'b', 'c'])), 'a.b.c');
  * // => [1, 2]
  */
-var method = restParam(function(path, args) {
+var method = rest(function(path, args) {
   return function(object) {
-    return invokePath(object, path, args);
+    return baseInvoke(object, path, args);
   };
 });
 

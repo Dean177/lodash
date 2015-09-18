@@ -1,8 +1,7 @@
 import baseDifference from '../internal/baseDifference';
 import baseFlatten from '../internal/baseFlatten';
-import isArrayLike from '../internal/isArrayLike';
-import isObjectLike from '../internal/isObjectLike';
-import restParam from '../function/restParam';
+import isArrayLikeObject from '../lang/isArrayLikeObject';
+import rest from '../function/rest';
 
 /**
  * Creates an array of unique `array` values not included in the other
@@ -13,15 +12,15 @@ import restParam from '../function/restParam';
  * @memberOf _
  * @category Array
  * @param {Array} array The array to inspect.
- * @param {...Array} [values] The arrays of values to exclude.
+ * @param {...Array} [values] The values to exclude.
  * @returns {Array} Returns the new array of filtered values.
  * @example
  *
- * _.difference([1, 2, 3], [4, 2]);
- * // => [1, 3]
+ * _.difference([3, 2, 1], [4, 2]);
+ * // => [3, 1]
  */
-var difference = restParam(function(array, values) {
-  return (isObjectLike(array) && isArrayLike(array))
+var difference = rest(function(array, values) {
+  return isArrayLikeObject(array)
     ? baseDifference(array, baseFlatten(values, false, true))
     : [];
 });

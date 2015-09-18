@@ -1,2 +1,1 @@
-import forEachRight from './forEachRight'
-export default forEachRight;
+export { default } from './forEachRight'

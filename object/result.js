@@ -1,9 +1,8 @@
-import baseGet from '../internal/baseGet';
-import baseSlice from '../internal/baseSlice';
+import baseToPath from '../internal/baseToPath';
+import get from './get';
 import isFunction from '../lang/isFunction';
 import isKey from '../internal/isKey';
-import last from '../array/last';
-import toPath from '../internal/toPath';
+import parent from '../internal/parent';
 
 /**
  * This method is like `_.get` except that if the resolved value is a function
@@ -27,21 +26,22 @@ import toPath from '../internal/toPath';
  * _.result(object, 'a[0].b.c2');
  * // => 4
  *
- * _.result(object, 'a.b.c', 'default');
+ * _.result(object, 'a[0].b.c3', 'default');
  * // => 'default'
  *
- * _.result(object, 'a.b.c', _.constant('default'));
+ * _.result(object, 'a[0].b.c3', _.constant('default'));
  * // => 'default'
  */
 function result(object, path, defaultValue) {
-  var result = object == null ? undefined : object[path];
+  if (!isKey(path, object)) {
+    path = baseToPath(path);
+    var result = get(object, path);
+    object = parent(object, path);
+  } else {
+    result = object == null ? undefined : object[path];
+  }
   if (result === undefined) {
-    if (object != null && !isKey(path, object)) {
-      path = toPath(path);
-      object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
-      result = object == null ? undefined : object[last(path)];
-    }
-    result = result === undefined ? defaultValue : result;
+    result = defaultValue;
   }
   return isFunction(result) ? result.call(object) : result;
 }

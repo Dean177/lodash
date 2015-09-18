@@ -1,9 +1,8 @@
 import baseGet from '../internal/baseGet';
-import toPath from '../internal/toPath';
 
 /**
  * The opposite of `_.property`; this method creates a function that returns
- * the property value at a given path on `object`.
+ * the value at a given path of `object`.
  *
  * @static
  * @memberOf _
@@ -23,7 +22,7 @@ import toPath from '../internal/toPath';
  */
 function propertyOf(object) {
   return function(path) {
-    return baseGet(object, toPath(path), (path + ''));
+    return object == null ? undefined : baseGet(object, path);
   };
 }
 

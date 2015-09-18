@@ -1,4 +1,4 @@
-# lodash-es v3.10.1
+# lodash-es v4.0.0-pre
 
 The [modern build](https://github.com/lodash/lodash/wiki/Build-Differences) of [lodash](https://lodash.com/) exported as [ES](https://people.mozilla.org/~jorendorff/es6-draft.html) modules.
 

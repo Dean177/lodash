@@ -1,43 +1,39 @@
-import assignWith from '../internal/assignWith';
-import baseAssign from '../internal/baseAssign';
+import copyObject from '../internal/copyObject';
 import createAssigner from '../internal/createAssigner';
+import keys from './keys';
 
 /**
- * Assigns own enumerable properties of source object(s) to the destination
- * object. Subsequent sources overwrite property assignments of previous sources.
- * If `customizer` is provided it's invoked to produce the assigned values.
- * The `customizer` is bound to `thisArg` and invoked with five arguments:
- * (objectValue, sourceValue, key, object, source).
+ * Assigns own enumerable properties of source objects to the destination
+ * object. Source objects are applied from left to right. Subsequent sources
+ * overwrite property assignments of previous sources.
  *
- * **Note:** This method mutates `object` and is based on
+ * **Note:** This method mutates `object` and is loosely based on
  * [`Object.assign`](http://ecma-international.org/ecma-262/6.0/#sec-object.assign).
  *
  * @static
  * @memberOf _
- * @alias extend
  * @category Object
  * @param {Object} object The destination object.
  * @param {...Object} [sources] The source objects.
- * @param {Function} [customizer] The function to customize assigned values.
- * @param {*} [thisArg] The `this` binding of `customizer`.
  * @returns {Object} Returns `object`.
  * @example
  *
- * _.assign({ 'user': 'barney' }, { 'age': 40 }, { 'user': 'fred' });
- * // => { 'user': 'fred', 'age': 40 }
+ * function Foo() {
+ *   this.c = 3;
+ * }
  *
- * // using a customizer callback
- * var defaults = _.partialRight(_.assign, function(value, other) {
- *   return _.isUndefined(value) ? other : value;
- * });
+ * function Bar() {
+ *   this.e = 5;
+ * }
  *
- * defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
- * // => { 'user': 'barney', 'age': 36 }
+ * Foo.prototype.d = 4;
+ * Bar.prototype.f = 6;
+ *
+ * _.assign({ 'a': 1 }, new Foo, new Bar);
+ * // => { 'a': 1, 'c': 3, 'e': 5 }
  */
-var assign = createAssigner(function(object, source, customizer) {
-  return customizer
-    ? assignWith(object, source, customizer)
-    : baseAssign(object, source);
+var assign = createAssigner(function(object, source) {
+  copyObject(source, keys(source), object);
 });
 
 export default assign;

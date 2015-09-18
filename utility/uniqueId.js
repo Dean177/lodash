@@ -1,4 +1,4 @@
-import baseToString from '../internal/baseToString';
+import toString from '../lang/toString';
 
 /** Used to generate unique IDs. */
 var idCounter = 0;
@@ -21,7 +21,7 @@ var idCounter = 0;
  */
 function uniqueId(prefix) {
   var id = ++idCounter;
-  return baseToString(prefix) + id;
+  return toString(prefix) + id;
 }
 
 export default uniqueId;

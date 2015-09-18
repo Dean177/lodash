@@ -1,6 +1,8 @@
 import arrayReduceRight from '../internal/arrayReduceRight';
 import baseEachRight from '../internal/baseEachRight';
-import createReduce from '../internal/createReduce';
+import baseIteratee from '../internal/baseIteratee';
+import baseReduce from '../internal/baseReduce';
+import isArray from '../lang/isArray';
 
 /**
  * This method is like `_.reduce` except that it iterates over elements of
@@ -8,12 +10,10 @@ import createReduce from '../internal/createReduce';
  *
  * @static
  * @memberOf _
- * @alias foldr
  * @category Collection
- * @param {Array|Object|string} collection The collection to iterate over.
+ * @param {Array|Object} collection The collection to iterate over.
  * @param {Function} [iteratee=_.identity] The function invoked per iteration.
  * @param {*} [accumulator] The initial value.
- * @param {*} [thisArg] The `this` binding of `iteratee`.
  * @returns {*} Returns the accumulated value.
  * @example
  *
@@ -24,6 +24,11 @@ import createReduce from '../internal/createReduce';
  * }, []);
  * // => [4, 5, 2, 3, 0, 1]
  */
-var reduceRight = createReduce(arrayReduceRight, baseEachRight);
+function reduceRight(collection, iteratee, accumulator) {
+  var initFromCollection = arguments.length < 3;
+  return (typeof iteratee == 'function' && isArray(collection))
+    ? arrayReduceRight(collection, iteratee, accumulator, initFromCollection)
+    : baseReduce(collection, baseIteratee(iteratee, 4), accumulator, initFromCollection, baseEachRight);
+}
 
 export default reduceRight;

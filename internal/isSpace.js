@@ -1,5 +1,5 @@
 /**
- * Used by `trimmedLeftIndex` and `trimmedRightIndex` to determine if a
+ * Used by `trimmedStartIndex` and `trimmedEndIndex` to determine if a
  * character code is whitespace.
  *
  * @private

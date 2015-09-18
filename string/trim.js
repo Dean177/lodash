@@ -1,9 +1,8 @@
-import baseToString from '../internal/baseToString';
-import charsLeftIndex from '../internal/charsLeftIndex';
-import charsRightIndex from '../internal/charsRightIndex';
-import isIterateeCall from '../internal/isIterateeCall';
-import trimmedLeftIndex from '../internal/trimmedLeftIndex';
-import trimmedRightIndex from '../internal/trimmedRightIndex';
+import baseTrim from '../internal/baseTrim';
+import charsEndIndex from '../internal/charsEndIndex';
+import charsStartIndex from '../internal/charsStartIndex';
+import stringToArray from '../internal/stringToArray';
+import toString from '../lang/toString';
 
 /**
  * Removes leading and trailing whitespace or specified characters from `string`.
@@ -13,7 +12,7 @@ import trimmedRightIndex from '../internal/trimmedRightIndex';
  * @category String
  * @param {string} [string=''] The string to trim.
  * @param {string} [chars=whitespace] The characters to trim.
- * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+ * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
  * @returns {string} Returns the trimmed string.
  * @example
  *
@@ -27,16 +26,21 @@ import trimmedRightIndex from '../internal/trimmedRightIndex';
  * // => ['foo', 'bar']
  */
 function trim(string, chars, guard) {
-  var value = string;
-  string = baseToString(string);
+  string = toString(string);
   if (!string) {
     return string;
   }
-  if (guard ? isIterateeCall(value, chars, guard) : chars == null) {
-    return string.slice(trimmedLeftIndex(string), trimmedRightIndex(string) + 1);
+  if (guard || chars === undefined) {
+    return baseTrim(string);
   }
   chars = (chars + '');
-  return string.slice(charsLeftIndex(string, chars), charsRightIndex(string, chars) + 1);
+  if (!chars) {
+    return string;
+  }
+  var strSymbols = stringToArray(string),
+      chrSymbols = stringToArray(chars);
+
+  return strSymbols.slice(charsStartIndex(strSymbols, chrSymbols), charsEndIndex(strSymbols, chrSymbols) + 1).join('');
 }
 
 export default trim;

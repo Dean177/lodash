@@ -1,55 +1,26 @@
-import after from './function/after';
-import ary from './function/ary';
-import backflow from './function/backflow';
-import before from './function/before';
-import bind from './function/bind';
-import bindAll from './function/bindAll';
-import bindKey from './function/bindKey';
-import compose from './function/compose';
-import curry from './function/curry';
-import curryRight from './function/curryRight';
-import debounce from './function/debounce';
-import defer from './function/defer';
-import delay from './function/delay';
-import flow from './function/flow';
-import flowRight from './function/flowRight';
-import memoize from './function/memoize';
-import modArgs from './function/modArgs';
-import negate from './function/negate';
-import once from './function/once';
-import partial from './function/partial';
-import partialRight from './function/partialRight';
-import rearg from './function/rearg';
-import restParam from './function/restParam';
-import spread from './function/spread';
-import throttle from './function/throttle';
-import wrap from './function/wrap';
-
-export default {
-  'after': after,
-  'ary': ary,
-  'backflow': backflow,
-  'before': before,
-  'bind': bind,
-  'bindAll': bindAll,
-  'bindKey': bindKey,
-  'compose': compose,
-  'curry': curry,
-  'curryRight': curryRight,
-  'debounce': debounce,
-  'defer': defer,
-  'delay': delay,
-  'flow': flow,
-  'flowRight': flowRight,
-  'memoize': memoize,
-  'modArgs': modArgs,
-  'negate': negate,
-  'once': once,
-  'partial': partial,
-  'partialRight': partialRight,
-  'rearg': rearg,
-  'restParam': restParam,
-  'spread': spread,
-  'throttle': throttle,
-  'wrap': wrap
-};
+export { default as after } from './function/after';
+export { default as ary } from './function/ary';
+export { default as before } from './function/before';
+export { default as bind } from './function/bind';
+export { default as bindAll } from './function/bindAll';
+export { default as bindKey } from './function/bindKey';
+export { default as curry } from './function/curry';
+export { default as curryRight } from './function/curryRight';
+export { default as debounce } from './function/debounce';
+export { default as defer } from './function/defer';
+export { default as delay } from './function/delay';
+export { default as flip } from './function/flip';
+export { default as memoize } from './function/memoize';
+export { default as modArgs } from './function/modArgs';
+export { default as modArgsSet } from './function/modArgsSet';
+export { default as negate } from './function/negate';
+export { default as once } from './function/once';
+export { default as partial } from './function/partial';
+export { default as partialRight } from './function/partialRight';
+export { default as rearg } from './function/rearg';
+export { default as rest } from './function/rest';
+export { default as spread } from './function/spread';
+export { default as throttle } from './function/throttle';
+export { default as unary } from './function/unary';
+export { default as wrap } from './function/wrap';
+export { default as default } from './function.default';

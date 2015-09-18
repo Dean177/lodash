@@ -1,5 +1,8 @@
 import baseEachRight from '../internal/baseEachRight';
-import createFind from '../internal/createFind';
+import baseFind from '../internal/baseFind';
+import baseFindIndex from '../internal/baseFindIndex';
+import baseIteratee from '../internal/baseIteratee';
+import isArray from '../lang/isArray';
 
 /**
  * This method is like `_.find` except that it iterates over elements of
@@ -8,10 +11,8 @@ import createFind from '../internal/createFind';
  * @static
  * @memberOf _
  * @category Collection
- * @param {Array|Object|string} collection The collection to search.
- * @param {Function|Object|string} [predicate=_.identity] The function invoked
- *  per iteration.
- * @param {*} [thisArg] The `this` binding of `predicate`.
+ * @param {Array|Object} collection The collection to search.
+ * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
  * @returns {*} Returns the matched element, else `undefined`.
  * @example
  *
@@ -20,6 +21,13 @@ import createFind from '../internal/createFind';
  * });
  * // => 3
  */
-var findLast = createFind(baseEachRight, true);
+function findLast(collection, predicate) {
+  predicate = baseIteratee(predicate, 3);
+  if (isArray(collection)) {
+    var index = baseFindIndex(collection, predicate, true);
+    return index > -1 ? collection[index] : undefined;
+  }
+  return baseFind(collection, predicate, baseEachRight);
+}
 
 export default findLast;

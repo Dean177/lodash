@@ -1,35 +1,25 @@
-import attempt from './utility/attempt';
-import callback from './utility/callback';
-import constant from './utility/constant';
-import identity from './utility/identity';
-import iteratee from './utility/iteratee';
-import matches from './utility/matches';
-import matchesProperty from './utility/matchesProperty';
-import method from './utility/method';
-import methodOf from './utility/methodOf';
-import mixin from './utility/mixin';
-import noop from './utility/noop';
-import property from './utility/property';
-import propertyOf from './utility/propertyOf';
-import range from './utility/range';
-import times from './utility/times';
-import uniqueId from './utility/uniqueId';
-
-export default {
-  'attempt': attempt,
-  'callback': callback,
-  'constant': constant,
-  'identity': identity,
-  'iteratee': iteratee,
-  'matches': matches,
-  'matchesProperty': matchesProperty,
-  'method': method,
-  'methodOf': methodOf,
-  'mixin': mixin,
-  'noop': noop,
-  'property': property,
-  'propertyOf': propertyOf,
-  'range': range,
-  'times': times,
-  'uniqueId': uniqueId
-};
+export { default as attempt } from './utility/attempt';
+export { default as conforms } from './utility/conforms';
+export { default as constant } from './utility/constant';
+export { default as flow } from './utility/flow';
+export { default as flowRight } from './utility/flowRight';
+export { default as identity } from './utility/identity';
+export { default as iteratee } from './utility/iteratee';
+export { default as matches } from './utility/matches';
+export { default as matchesProperty } from './utility/matchesProperty';
+export { default as method } from './utility/method';
+export { default as methodOf } from './utility/methodOf';
+export { default as mixin } from './utility/mixin';
+export { default as noop } from './utility/noop';
+export { default as nthArg } from './utility/nthArg';
+export { default as over } from './utility/over';
+export { default as overEvery } from './utility/overEvery';
+export { default as overSome } from './utility/overSome';
+export { default as property } from './utility/property';
+export { default as propertyOf } from './utility/propertyOf';
+export { default as range } from './utility/range';
+export { default as rangeRight } from './utility/rangeRight';
+export { default as times } from './utility/times';
+export { default as toPath } from './utility/toPath';
+export { default as uniqueId } from './utility/uniqueId';
+export { default as default } from './utility.default';

@@ -1,3 +1,5 @@
+import apply from '../internal/apply';
+
 /** Used as the `TypeError` message for "Functions" methods. */
 var FUNC_ERROR_TEXT = 'Expected a function';
 
@@ -5,7 +7,7 @@ var FUNC_ERROR_TEXT = 'Expected a function';
  * Creates a function that invokes `func` with the `this` binding of the created
  * function and an array of arguments much like [`Function#apply`](https://es5.github.io/#x15.3.4.3).
  *
- * **Note:** This method is based on the [spread operator](https://developer.mozilla.org/Web/JavaScript/Reference/Operators/Spread_operator).
+ * **Note:** This method is based on the [spread operator](https://mdn.io/spread_operator).
  *
  * @static
  * @memberOf _
@@ -37,7 +39,7 @@ function spread(func) {
     throw new TypeError(FUNC_ERROR_TEXT);
   }
   return function(array) {
-    return func.apply(this, array);
+    return apply(func, this, array);
   };
 }
 

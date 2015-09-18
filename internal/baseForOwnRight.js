@@ -2,8 +2,7 @@ import baseForRight from './baseForRight';
 import keys from '../object/keys';
 
 /**
- * The base implementation of `_.forOwnRight` without support for callback
- * shorthands and `this` binding.
+ * The base implementation of `_.forOwnRight` without support for callback shorthands.
  *
  * @private
  * @param {Object} object The object to iterate over.
@@ -11,7 +10,7 @@ import keys from '../object/keys';
  * @returns {Object} Returns `object`.
  */
 function baseForOwnRight(object, iteratee) {
-  return baseForRight(object, iteratee, keys);
+  return object && baseForRight(object, iteratee, keys);
 }
 
 export default baseForOwnRight;

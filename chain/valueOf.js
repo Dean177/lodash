@@ -1,2 +1,1 @@
-import wrapperValue from './wrapperValue'
-export default wrapperValue;
+export { default } from './value'

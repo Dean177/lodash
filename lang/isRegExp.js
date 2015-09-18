@@ -3,7 +3,7 @@ import isObject from './isObject';
 /** `Object#toString` result references. */
 var regexpTag = '[object RegExp]';
 
-/** Used for native method references. */
+/** Used for built-in method references. */
 var objectProto = Object.prototype;
 
 /**

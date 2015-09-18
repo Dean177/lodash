@@ -1,4 +1,4 @@
-import restParam from '../function/restParam';
+import rest from '../function/rest';
 import unzip from './unzip';
 
 /**
@@ -16,6 +16,6 @@ import unzip from './unzip';
  * _.zip(['fred', 'barney'], [30, 40], [true, false]);
  * // => [['fred', 30, true], ['barney', 40, false]]
  */
-var zip = restParam(unzip);
+var zip = rest(unzip);
 
 export default zip;

@@ -1,7 +1,7 @@
-import arrayPush from '../internal/arrayPush';
-import baseDifference from '../internal/baseDifference';
-import baseUniq from '../internal/baseUniq';
-import isArrayLike from '../internal/isArrayLike';
+import arrayFilter from '../internal/arrayFilter';
+import baseXor from '../internal/baseXor';
+import isArrayLikeObject from '../lang/isArrayLikeObject';
+import rest from '../function/rest';
 
 /**
  * Creates an array of unique values that is the [symmetric difference](https://en.wikipedia.org/wiki/Symmetric_difference)
@@ -14,22 +14,11 @@ import isArrayLike from '../internal/isArrayLike';
  * @returns {Array} Returns the new array of values.
  * @example
  *
- * _.xor([1, 2], [4, 2]);
+ * _.xor([2, 1], [4, 2]);
  * // => [1, 4]
  */
-function xor() {
-  var index = -1,
-      length = arguments.length;
-
-  while (++index < length) {
-    var array = arguments[index];
-    if (isArrayLike(array)) {
-      var result = result
-        ? arrayPush(baseDifference(result, array), baseDifference(array, result))
-        : array;
-    }
-  }
-  return result ? baseUniq(result) : [];
-}
+var xor = rest(function(arrays) {
+  return baseXor(arrayFilter(arrays, isArrayLikeObject));
+});
 
 export default xor;

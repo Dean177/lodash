@@ -1,10 +1,7 @@
-import isArguments from './isArguments';
-import isArray from './isArray';
-import isArrayLike from '../internal/isArrayLike';
 import isFunction from './isFunction';
-import isObjectLike from '../internal/isObjectLike';
-import isString from './isString';
+import isObjectLike from './isObjectLike';
 import keys from '../object/keys';
+import size from '../collection/size';
 
 /**
  * Checks if `value` is empty. A value is considered empty unless it's an
@@ -34,14 +31,9 @@ import keys from '../object/keys';
  * // => false
  */
 function isEmpty(value) {
-  if (value == null) {
-    return true;
-  }
-  if (isArrayLike(value) && (isArray(value) || isString(value) || isArguments(value) ||
-      (isObjectLike(value) && isFunction(value.splice)))) {
-    return !value.length;
-  }
-  return !keys(value).length;
+  return (!isObjectLike(value) || isFunction(value.splice))
+    ? !size(value)
+    : !keys(value).length;
 }
 
 export default isEmpty;

@@ -1,9 +1,10 @@
-import isObjectLike from '../internal/isObjectLike';
+import isArray from './isArray';
+import isObjectLike from './isObjectLike';
 
 /** `Object#toString` result references. */
 var stringTag = '[object String]';
 
-/** Used for native method references. */
+/** Used for built-in method references. */
 var objectProto = Object.prototype;
 
 /**
@@ -29,7 +30,8 @@ var objToString = objectProto.toString;
  * // => false
  */
 function isString(value) {
-  return typeof value == 'string' || (isObjectLike(value) && objToString.call(value) == stringTag);
+  return typeof value == 'string' ||
+    (!isArray(value) && isObjectLike(value) && objToString.call(value) == stringTag);
 }
 
 export default isString;

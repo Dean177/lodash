@@ -1,7 +1,11 @@
-import arrayCopy from './arrayCopy';
+import assignMergeValue from './assignMergeValue';
+import baseClone from './baseClone';
+import copyArray from './copyArray';
 import isArguments from '../lang/isArguments';
 import isArray from '../lang/isArray';
-import isArrayLike from './isArrayLike';
+import isArrayLikeObject from '../lang/isArrayLikeObject';
+import isFunction from '../lang/isFunction';
+import isObject from '../lang/isObject';
 import isPlainObject from '../lang/isPlainObject';
 import isTypedArray from '../lang/isTypedArray';
 import toPlainObject from '../lang/toPlainObject';
@@ -16,52 +20,44 @@ import toPlainObject from '../lang/toPlainObject';
  * @param {Object} source The source object.
  * @param {string} key The key of the value to merge.
  * @param {Function} mergeFunc The function to merge values.
- * @param {Function} [customizer] The function to customize merged values.
- * @param {Array} [stackA=[]] Tracks traversed source objects.
- * @param {Array} [stackB=[]] Associates values with source counterparts.
- * @returns {boolean} Returns `true` if the objects are equivalent, else `false`.
+ * @param {Function} [customizer] The function to customize assigned values.
+ * @param {Object} [stack] Tracks traversed sources and their value counterparts.
  */
-function baseMergeDeep(object, source, key, mergeFunc, customizer, stackA, stackB) {
-  var length = stackA.length,
-      srcValue = source[key];
+function baseMergeDeep(object, source, key, mergeFunc, customizer, stack) {
+  var oldValue = object[key],
+      srcValue = source[key],
+      stacked = stack.get(oldValue) || stack.get(srcValue);
 
-  while (length--) {
-    if (stackA[length] == srcValue) {
-      object[key] = stackB[length];
-      return;
-    }
+  if (stacked) {
+    assignMergeValue(object, key, stacked);
+    return;
   }
-  var value = object[key],
-      result = customizer ? customizer(value, srcValue, key, object, source) : undefined,
-      isCommon = result === undefined;
+  var newValue = customizer ? customizer(oldValue, srcValue, (key + ''), object, source, stack) : undefined,
+      isCommon = newValue === undefined;
 
   if (isCommon) {
-    result = srcValue;
-    if (isArrayLike(srcValue) && (isArray(srcValue) || isTypedArray(srcValue))) {
-      result = isArray(value)
-        ? value
-        : (isArrayLike(value) ? arrayCopy(value) : []);
+    newValue = srcValue;
+    if (isArray(srcValue) || isTypedArray(srcValue)) {
+      newValue = isArray(oldValue)
+        ? oldValue
+        : ((isArrayLikeObject(oldValue)) ? copyArray(oldValue) : baseClone(srcValue));
     }
     else if (isPlainObject(srcValue) || isArguments(srcValue)) {
-      result = isArguments(value)
-        ? toPlainObject(value)
-        : (isPlainObject(value) ? value : {});
+      newValue = isArguments(oldValue)
+        ? toPlainObject(oldValue)
+        : (isObject(oldValue) ? oldValue : baseClone(srcValue));
     }
     else {
-      isCommon = false;
+      isCommon = isFunction(srcValue);
     }
   }
-  // Add the source value to the stack of traversed objects and associate
-  // it with its merged value.
-  stackA.push(srcValue);
-  stackB.push(result);
+  stack.set(srcValue, newValue);
 
   if (isCommon) {
     // Recursively merge objects and arrays (susceptible to call stack limits).
-    object[key] = mergeFunc(result, srcValue, customizer, stackA, stackB);
-  } else if (result === result ? (result !== value) : (value === value)) {
-    object[key] = result;
+    mergeFunc(newValue, srcValue, customizer, stack);
   }
+  assignMergeValue(object, key, newValue);
 }
 
 export default baseMergeDeep;

@@ -1,6 +1,6 @@
 import baseFlatten from '../internal/baseFlatten';
 import baseUniq from '../internal/baseUniq';
-import restParam from '../function/restParam';
+import rest from '../function/rest';
 
 /**
  * Creates an array of unique values, in order, from all of the provided arrays
@@ -14,10 +14,10 @@ import restParam from '../function/restParam';
  * @returns {Array} Returns the new array of combined values.
  * @example
  *
- * _.union([1, 2], [4, 2], [2, 1]);
- * // => [1, 2, 4]
+ * _.union([2, 1], [4, 2], [1, 2]);
+ * // => [2, 1, 4]
  */
-var union = restParam(function(arrays) {
+var union = rest(function(arrays) {
   return baseUniq(baseFlatten(arrays, false, true));
 });
 

@@ -1,4 +1,4 @@
-import baseCopy from '../internal/baseCopy';
+import copyObject from '../internal/copyObject';
 import keysIn from '../object/keysIn';
 
 /**
@@ -25,7 +25,7 @@ import keysIn from '../object/keysIn';
  * // => { 'a': 1, 'b': 2, 'c': 3 }
  */
 function toPlainObject(value) {
-  return baseCopy(value, keysIn(value));
+  return copyObject(value, keysIn(value));
 }
 
 export default toPlainObject;

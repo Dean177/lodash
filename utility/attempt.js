@@ -1,5 +1,6 @@
+import apply from '../internal/apply';
 import isError from '../lang/isError';
-import restParam from '../function/restParam';
+import rest from '../function/rest';
 
 /**
  * Attempts to invoke `func`, returning either the result or the caught error
@@ -21,10 +22,10 @@ import restParam from '../function/restParam';
  *   elements = [];
  * }
  */
-var attempt = restParam(function(func, args) {
+var attempt = rest(function(func, args) {
   try {
-    return func.apply(undefined, args);
-  } catch(e) {
+    return apply(func, undefined, args);
+  } catch (e) {
     return isError(e) ? e : new Error(e);
   }
 });

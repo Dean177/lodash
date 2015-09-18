@@ -1,7 +1,9 @@
-import baseToString from '../internal/baseToString';
+import toString from '../lang/toString';
+import upperFirst from './upperFirst';
 
 /**
- * Capitalizes the first character of `string`.
+ * Converts the first character of `string` to upper case and the remaining
+ * to lower case.
  *
  * @static
  * @memberOf _
@@ -10,12 +12,11 @@ import baseToString from '../internal/baseToString';
  * @returns {string} Returns the capitalized string.
  * @example
  *
- * _.capitalize('fred');
+ * _.capitalize('FRED');
  * // => 'Fred'
  */
 function capitalize(string) {
-  string = baseToString(string);
-  return string && (string.charAt(0).toUpperCase() + string.slice(1));
+  return upperFirst(toString(string).toLowerCase());
 }
 
 export default capitalize;

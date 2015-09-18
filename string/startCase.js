@@ -1,3 +1,4 @@
+import capitalize from './capitalize';
 import createCompounder from '../internal/createCompounder';
 
 /**
@@ -20,7 +21,7 @@ import createCompounder from '../internal/createCompounder';
  * // => 'Foo Bar'
  */
 var startCase = createCompounder(function(result, word, index) {
-  return result + (index ? ' ' : '') + (word.charAt(0).toUpperCase() + word.slice(1));
+  return result + (index ? ' ' : '') + capitalize(word);
 });
 
 export default startCase;

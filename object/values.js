@@ -27,7 +27,7 @@ import keys from './keys';
  * // => ['h', 'i']
  */
 function values(object) {
-  return baseValues(object, keys(object));
+  return object ? baseValues(object, keys(object)) : [];
 }
 
 export default values;

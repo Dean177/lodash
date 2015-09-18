@@ -1,6 +1,6 @@
 import root from '../internal/root';
 
-/* Native method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeIsFinite = root.isFinite;
 
 /**
@@ -15,17 +15,14 @@ var nativeIsFinite = root.isFinite;
  * @returns {boolean} Returns `true` if `value` is a finite number, else `false`.
  * @example
  *
- * _.isFinite(10);
+ * _.isFinite(3);
  * // => true
  *
- * _.isFinite('10');
- * // => false
+ * _.isFinite(Number.MAX_VALUE);
+ * // => true
  *
- * _.isFinite(true);
- * // => false
- *
- * _.isFinite(Object(10));
- * // => false
+ * _.isFinite(3.14);
+ * // => true
  *
  * _.isFinite(Infinity);
  * // => false

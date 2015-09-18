@@ -1,6 +1,7 @@
-import createDefaults from '../internal/createDefaults';
-import merge from './merge';
+import apply from '../internal/apply';
 import mergeDefaults from '../internal/mergeDefaults';
+import mergeWith from './mergeWith';
+import rest from '../function/rest';
 
 /**
  * This method is like `_.defaults` except that it recursively assigns
@@ -20,6 +21,9 @@ import mergeDefaults from '../internal/mergeDefaults';
  * // => { 'user': { 'name': 'barney', 'age': 36 } }
  *
  */
-var defaultsDeep = createDefaults(merge, mergeDefaults);
+var defaultsDeep = rest(function(args) {
+  args.push(undefined, mergeDefaults);
+  return apply(mergeWith, undefined, args);
+});
 
 export default defaultsDeep;
