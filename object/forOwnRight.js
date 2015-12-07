@@ -1,4 +1,4 @@
-define(['../internal/baseForOwnRight', '../internal/createForOwn'], function(baseForOwnRight, createForOwn) {
+define(['../internal/baseForOwnRight', '../internal/toFunction'], function(baseForOwnRight, toFunction) {
 
   /**
    * This method is like `_.forOwn` except that it iterates over properties of
@@ -9,7 +9,6 @@ define(['../internal/baseForOwnRight', '../internal/createForOwn'], function(bas
    * @category Object
    * @param {Object} object The object to iterate over.
    * @param {Function} [iteratee=_.identity] The function invoked per iteration.
-   * @param {*} [thisArg] The `this` binding of `iteratee`.
    * @returns {Object} Returns `object`.
    * @example
    *
@@ -23,9 +22,11 @@ define(['../internal/baseForOwnRight', '../internal/createForOwn'], function(bas
    * _.forOwnRight(new Foo, function(value, key) {
    *   console.log(key);
    * });
-   * // => logs 'b' and 'a' assuming `_.forOwn` logs 'a' and 'b'
+   * // => logs 'b' then 'a' assuming `_.forOwn` logs 'a' then 'b'
    */
-  var forOwnRight = createForOwn(baseForOwnRight);
+  function forOwnRight(object, iteratee) {
+    return object && baseForOwnRight(object, toFunction(iteratee));
+  }
 
   return forOwnRight;
 });

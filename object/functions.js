@@ -1,22 +1,28 @@
-define(['../internal/baseFunctions', './keysIn'], function(baseFunctions, keysIn) {
+define(['../internal/baseFunctions', './keys'], function(baseFunctions, keys) {
 
   /**
-   * Creates an array of function property names from all enumerable properties,
-   * own and inherited, of `object`.
+   * Creates an array of function property names from own enumerable properties
+   * of `object`.
    *
    * @static
    * @memberOf _
-   * @alias methods
    * @category Object
    * @param {Object} object The object to inspect.
    * @returns {Array} Returns the new array of property names.
    * @example
    *
-   * _.functions(_);
-   * // => ['after', 'ary', 'assign', ...]
+   * function Foo() {
+   *   this.a = _.constant('a');
+   *   this.b = _.constant('b');
+   * }
+   *
+   * Foo.prototype.c = _.constant('c');
+   *
+   * _.functions(new Foo);
+   * // => ['a', 'b']
    */
   function functions(object) {
-    return baseFunctions(object, keysIn(object));
+    return object == null ? [] : baseFunctions(object, keys(object));
   }
 
   return functions;

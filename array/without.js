@@ -1,4 +1,4 @@
-define(['../internal/baseDifference', '../internal/isArrayLike', '../function/restParam'], function(baseDifference, isArrayLike, restParam) {
+define(['../internal/baseDifference', '../lang/isArrayLikeObject', '../function/rest'], function(baseDifference, isArrayLikeObject, rest) {
 
   /**
    * Creates an array excluding all provided values using
@@ -16,8 +16,8 @@ define(['../internal/baseDifference', '../internal/isArrayLike', '../function/re
    * _.without([1, 2, 1, 3], 1, 2);
    * // => [3]
    */
-  var without = restParam(function(array, values) {
-    return isArrayLike(array)
+  var without = rest(function(array, values) {
+    return isArrayLikeObject(array)
       ? baseDifference(array, values)
       : [];
   });

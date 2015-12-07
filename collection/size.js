@@ -1,4 +1,4 @@
-define(['../internal/getLength', '../internal/isLength', '../object/keys'], function(getLength, isLength, keys) {
+define(['../lang/isArrayLike', '../lang/isString', '../object/keys', '../internal/stringSize'], function(isArrayLike, isString, keys, stringSize) {
 
   /**
    * Gets the size of `collection` by returning its length for array-like
@@ -7,8 +7,8 @@ define(['../internal/getLength', '../internal/isLength', '../object/keys'], func
    * @static
    * @memberOf _
    * @category Collection
-   * @param {Array|Object|string} collection The collection to inspect.
-   * @returns {number} Returns the size of `collection`.
+   * @param {Array|Object} collection The collection to inspect.
+   * @returns {number} Returns the collection size.
    * @example
    *
    * _.size([1, 2, 3]);
@@ -21,8 +21,14 @@ define(['../internal/getLength', '../internal/isLength', '../object/keys'], func
    * // => 7
    */
   function size(collection) {
-    var length = collection ? getLength(collection) : 0;
-    return isLength(length) ? length : keys(collection).length;
+    if (collection == null) {
+      return 0;
+    }
+    if (isArrayLike(collection)) {
+      var result = collection.length;
+      return (result && isString(collection)) ? stringSize(collection) : result;
+    }
+    return keys(collection).length;
   }
 
   return size;

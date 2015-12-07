@@ -1,4 +1,4 @@
-define(['../internal/assignOwnDefaults', '../internal/assignWith', '../utility/attempt', '../internal/baseAssign', '../internal/baseToString', '../internal/baseValues', '../internal/escapeStringChar', '../lang/isError', '../internal/isIterateeCall', '../object/keys', '../internal/reInterpolate', './templateSettings'], function(assignOwnDefaults, assignWith, attempt, baseAssign, baseToString, baseValues, escapeStringChar, isError, isIterateeCall, keys, reInterpolate, templateSettings) {
+define(['../internal/assignInDefaults', '../object/assignInWith', '../utility/attempt', '../internal/baseValues', '../internal/escapeStringChar', '../lang/isError', '../internal/isIterateeCall', '../object/keys', '../internal/reInterpolate', './templateSettings', '../lang/toString'], function(assignInDefaults, assignInWith, attempt, baseValues, escapeStringChar, isError, isIterateeCall, keys, reInterpolate, templateSettings, toString) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
@@ -121,10 +121,10 @@ define(['../internal/assignOwnDefaults', '../internal/assignWith', '../utility/a
     if (otherOptions && isIterateeCall(string, options, otherOptions)) {
       options = otherOptions = undefined;
     }
-    string = baseToString(string);
-    options = assignWith(baseAssign({}, otherOptions || options), settings, assignOwnDefaults);
+    string = toString(string);
+    options = assignInWith({}, otherOptions || options, settings, assignInDefaults);
 
-    var imports = assignWith(baseAssign({}, options.imports), settings.imports, assignOwnDefaults),
+    var imports = assignInWith({}, options.imports, settings.imports, assignInDefaults),
         importsKeys = keys(imports),
         importsValues = baseValues(imports, importsKeys);
 
@@ -165,8 +165,8 @@ define(['../internal/assignOwnDefaults', '../internal/assignWith', '../utility/a
       }
       index = offset + match.length;
 
-      // The JS engine embedded in Adobe products requires returning the `match`
-      // string in order to produce the correct `offset` value.
+      // The JS engine embedded in Adobe products needs `match` returned in
+      // order to produce the correct `offset` value.
       return match;
     });
 

@@ -1,4 +1,4 @@
-define(['../internal/arrayEach', '../internal/baseCallback', '../internal/baseCreate', '../internal/baseForOwn', '../lang/isArray', '../lang/isFunction', '../lang/isObject', '../lang/isTypedArray'], function(arrayEach, baseCallback, baseCreate, baseForOwn, isArray, isFunction, isObject, isTypedArray) {
+define(['../internal/arrayEach', '../internal/baseCreate', '../internal/baseForOwn', '../internal/baseIteratee', '../lang/isArray', '../lang/isFunction', '../lang/isObject', '../lang/isTypedArray'], function(arrayEach, baseCreate, baseForOwn, baseIteratee, isArray, isFunction, isObject, isTypedArray) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
@@ -7,9 +7,9 @@ define(['../internal/arrayEach', '../internal/baseCallback', '../internal/baseCr
    * An alternative to `_.reduce`; this method transforms `object` to a new
    * `accumulator` object which is the result of running each of its own enumerable
    * properties through `iteratee`, with each invocation potentially mutating
-   * the `accumulator` object. The `iteratee` is bound to `thisArg` and invoked
-   * with four arguments: (accumulator, value, key, object). Iteratee functions
-   * may exit iteration early by explicitly returning `false`.
+   * the `accumulator` object. The iteratee is invoked with four arguments:
+   * (accumulator, value, key, object). Iteratee functions may exit iteration
+   * early by explicitly returning `false`.
    *
    * @static
    * @memberOf _
@@ -17,7 +17,6 @@ define(['../internal/arrayEach', '../internal/baseCallback', '../internal/baseCr
    * @param {Array|Object} object The object to iterate over.
    * @param {Function} [iteratee=_.identity] The function invoked per iteration.
    * @param {*} [accumulator] The custom accumulator value.
-   * @param {*} [thisArg] The `this` binding of `iteratee`.
    * @returns {*} Returns the accumulated value.
    * @example
    *
@@ -27,14 +26,14 @@ define(['../internal/arrayEach', '../internal/baseCallback', '../internal/baseCr
    * });
    * // => [4, 9]
    *
-   * _.transform({ 'a': 1, 'b': 2 }, function(result, n, key) {
-   *   result[key] = n * 3;
+   * _.transform({ 'a': 1, 'b': 2, 'c': 1 }, function(result, value, key) {
+   *   (result[value] || (result[value] = [])).push(key);
    * });
-   * // => { 'a': 3, 'b': 6 }
+   * // => { '1': ['a', 'c'], '2': ['b'] }
    */
-  function transform(object, iteratee, accumulator, thisArg) {
+  function transform(object, iteratee, accumulator) {
     var isArr = isArray(object) || isTypedArray(object);
-    iteratee = baseCallback(iteratee, thisArg, 4);
+    iteratee = baseIteratee(iteratee, 4);
 
     if (accumulator == null) {
       if (isArr || isObject(object)) {

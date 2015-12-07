@@ -1,9 +1,9 @@
-define(['../internal/isObjectLike'], function(isObjectLike) {
+define(['./isObjectLike'], function(isObjectLike) {
 
   /** `Object#toString` result references. */
   var errorTag = '[object Error]';
 
-  /** Used for native method references. */
+  /** Used for built-in method references. */
   var objectProto = Object.prototype;
 
   /**
@@ -30,7 +30,8 @@ define(['../internal/isObjectLike'], function(isObjectLike) {
    * // => false
    */
   function isError(value) {
-    return isObjectLike(value) && typeof value.message == 'string' && objToString.call(value) == errorTag;
+    return isObjectLike(value) &&
+      typeof value.message == 'string' && objToString.call(value) == errorTag;
   }
 
   return isError;

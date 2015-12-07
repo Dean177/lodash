@@ -1,9 +1,13 @@
-define(['./assign', '../internal/assignDefaults', '../internal/createDefaults'], function(assign, assignDefaults, createDefaults) {
+define(['../internal/apply', '../internal/assignInDefaults', './assignInWith', '../function/rest'], function(apply, assignInDefaults, assignInWith, rest) {
+
+  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
+  var undefined;
 
   /**
-   * Assigns own enumerable properties of source object(s) to the destination
-   * object for all destination properties that resolve to `undefined`. Once a
-   * property is set, additional values of the same property are ignored.
+   * Assigns own and inherited enumerable properties of source objects to the
+   * destination object for all destination properties that resolve to `undefined`.
+   * Source objects are applied from left to right. Once a property is set,
+   * additional values of the same property are ignored.
    *
    * **Note:** This method mutates `object`.
    *
@@ -18,7 +22,10 @@ define(['./assign', '../internal/assignDefaults', '../internal/createDefaults'],
    * _.defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
    * // => { 'user': 'barney', 'age': 36 }
    */
-  var defaults = createDefaults(assign, assignDefaults);
+  var defaults = rest(function(args) {
+    args.push(undefined, assignInDefaults);
+    return apply(assignInWith, undefined, args);
+  });
 
   return defaults;
 });

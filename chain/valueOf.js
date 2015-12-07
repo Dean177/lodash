@@ -1,3 +1,3 @@
-define(["./wrapperValue"], function(wrapperValue) {
-  return wrapperValue;
+define(["./value"], function(value) {
+  return value;
 });

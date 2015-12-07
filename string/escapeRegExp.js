@@ -1,15 +1,12 @@
-define(['../internal/baseToString', '../internal/escapeRegExpChar'], function(baseToString, escapeRegExpChar) {
+define(['../lang/toString'], function(toString) {
+
+  /** Used to match `RegExp` [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns). */
+  var reRegExpChar = /[\\^$.*+?()[\]{}|]/g,
+      reHasRegExpChar = RegExp(reRegExpChar.source);
 
   /**
-   * Used to match `RegExp` [syntax characters](http://ecma-international.org/ecma-262/6.0/#sec-patterns)
-   * and those outlined by [`EscapeRegExpPattern`](http://ecma-international.org/ecma-262/6.0/#sec-escaperegexppattern).
-   */
-  var reRegExpChars = /^[:!,]|[\\^$.*+?()[\]{}|\/]|(^[0-9a-fA-Fnrtuvx])|([\n\r\u2028\u2029])/g,
-      reHasRegExpChars = RegExp(reRegExpChars.source);
-
-  /**
-   * Escapes the `RegExp` special characters "\", "/", "^", "$", ".", "|", "?",
-   * "*", "+", "(", ")", "[", "]", "{" and "}" in `string`.
+   * Escapes the `RegExp` special characters "^", "$", "\", ".", "*", "+",
+   * "?", "(", ")", "[", "]", "{", "}", and "|" in `string`.
    *
    * @static
    * @memberOf _
@@ -19,13 +16,13 @@ define(['../internal/baseToString', '../internal/escapeRegExpChar'], function(ba
    * @example
    *
    * _.escapeRegExp('[lodash](https://lodash.com/)');
-   * // => '\[lodash\]\(https:\/\/lodash\.com\/\)'
+   * // => '\[lodash\]\(https://lodash\.com/\)'
    */
   function escapeRegExp(string) {
-    string = baseToString(string);
-    return (string && reHasRegExpChars.test(string))
-      ? string.replace(reRegExpChars, escapeRegExpChar)
-      : (string || '(?:)');
+    string = toString(string);
+    return (string && reHasRegExpChar.test(string))
+      ? string.replace(reRegExpChar, '\\$&')
+      : string;
   }
 
   return escapeRegExp;

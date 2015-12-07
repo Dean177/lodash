@@ -1,10 +1,16 @@
-define(['../internal/baseToString', '../internal/deburrLetter'], function(baseToString, deburrLetter) {
-
-  /** Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks). */
-  var reComboMark = /[\u0300-\u036f\ufe20-\ufe23]/g;
+define(['../internal/deburrLetter', '../lang/toString'], function(deburrLetter, toString) {
 
   /** Used to match latin-1 supplementary letters (excluding mathematical operators). */
   var reLatin1 = /[\xc0-\xd6\xd8-\xde\xdf-\xf6\xf8-\xff]/g;
+
+  /** Used to compose unicode character classes. */
+  var rsComboRange = '\\u0300-\\u036f\\ufe20-\\ufe23';
+
+  /** Used to compose unicode capture groups. */
+  var rsCombo = '[' + rsComboRange + ']';
+
+  /** Used to match [combining diacritical marks](https://en.wikipedia.org/wiki/Combining_Diacritical_Marks). */
+  var reComboMark = RegExp(rsCombo, 'g');
 
   /**
    * Deburrs `string` by converting [latin-1 supplementary letters](https://en.wikipedia.org/wiki/Latin-1_Supplement_(Unicode_block)#Character_table)
@@ -21,7 +27,7 @@ define(['../internal/baseToString', '../internal/deburrLetter'], function(baseTo
    * // => 'deja vu'
    */
   function deburr(string) {
-    string = baseToString(string);
+    string = toString(string);
     return string && string.replace(reLatin1, deburrLetter).replace(reComboMark, '');
   }
 

@@ -1,10 +1,7 @@
-define(['../internal/baseToString'], function(baseToString) {
+define(['../number/clamp', '../lang/toInteger', '../lang/toString'], function(clamp, toInteger, toString) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
-
-  /* Native method references for those with the same name as other `lodash` methods. */
-  var nativeMin = Math.min;
 
   /**
    * Checks if `string` ends with the given target string.
@@ -28,13 +25,13 @@ define(['../internal/baseToString'], function(baseToString) {
    * // => true
    */
   function endsWith(string, target, position) {
-    string = baseToString(string);
-    target = (target + '');
+    string = toString(string);
+    target = typeof target == 'string' ? target : (target + '');
 
     var length = string.length;
     position = position === undefined
       ? length
-      : nativeMin(position < 0 ? 0 : (+position || 0), length);
+      : clamp(toInteger(position), 0, length);
 
     position -= target.length;
     return position >= 0 && string.indexOf(target, position) == position;

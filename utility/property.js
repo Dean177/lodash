@@ -1,8 +1,7 @@
 define(['../internal/baseProperty', '../internal/basePropertyDeep', '../internal/isKey'], function(baseProperty, basePropertyDeep, isKey) {
 
   /**
-   * Creates a function that returns the property value at `path` on a
-   * given object.
+   * Creates a function that returns the value at `path` of a given object.
    *
    * @static
    * @memberOf _
@@ -19,7 +18,7 @@ define(['../internal/baseProperty', '../internal/basePropertyDeep', '../internal
    * _.map(objects, _.property('a.b.c'));
    * // => [2, 1]
    *
-   * _.pluck(_.sortBy(objects, _.property(['a', 'b', 'c'])), 'a.b.c');
+   * _.map(_.sortBy(objects, _.property(['a', 'b', 'c'])), 'a.b.c');
    * // => [1, 2]
    */
   function property(path) {

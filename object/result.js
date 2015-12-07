@@ -1,4 +1,4 @@
-define(['../internal/baseGet', '../internal/baseSlice', '../lang/isFunction', '../internal/isKey', '../array/last', '../internal/toPath'], function(baseGet, baseSlice, isFunction, isKey, last, toPath) {
+define(['../internal/baseToPath', './get', '../lang/isFunction', '../internal/isKey', '../internal/parent'], function(baseToPath, get, isFunction, isKey, parent) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
@@ -25,21 +25,22 @@ define(['../internal/baseGet', '../internal/baseSlice', '../lang/isFunction', '.
    * _.result(object, 'a[0].b.c2');
    * // => 4
    *
-   * _.result(object, 'a.b.c', 'default');
+   * _.result(object, 'a[0].b.c3', 'default');
    * // => 'default'
    *
-   * _.result(object, 'a.b.c', _.constant('default'));
+   * _.result(object, 'a[0].b.c3', _.constant('default'));
    * // => 'default'
    */
   function result(object, path, defaultValue) {
-    var result = object == null ? undefined : object[path];
+    if (!isKey(path, object)) {
+      path = baseToPath(path);
+      var result = get(object, path);
+      object = parent(object, path);
+    } else {
+      result = object == null ? undefined : object[path];
+    }
     if (result === undefined) {
-      if (object != null && !isKey(path, object)) {
-        path = toPath(path);
-        object = path.length == 1 ? object : baseGet(object, baseSlice(path, 0, -1));
-        result = object == null ? undefined : object[last(path)];
-      }
-      result = result === undefined ? defaultValue : result;
+      result = defaultValue;
     }
     return isFunction(result) ? result.call(object) : result;
   }

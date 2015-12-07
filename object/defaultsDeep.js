@@ -1,4 +1,7 @@
-define(['../internal/createDefaults', './merge', '../internal/mergeDefaults'], function(createDefaults, merge, mergeDefaults) {
+define(['../internal/apply', '../internal/mergeDefaults', './mergeWith', '../function/rest'], function(apply, mergeDefaults, mergeWith, rest) {
+
+  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
+  var undefined;
 
   /**
    * This method is like `_.defaults` except that it recursively assigns
@@ -18,7 +21,10 @@ define(['../internal/createDefaults', './merge', '../internal/mergeDefaults'], f
    * // => { 'user': { 'name': 'barney', 'age': 36 } }
    *
    */
-  var defaultsDeep = createDefaults(merge, mergeDefaults);
+  var defaultsDeep = rest(function(args) {
+    args.push(undefined, mergeDefaults);
+    return apply(mergeWith, undefined, args);
+  });
 
   return defaultsDeep;
 });

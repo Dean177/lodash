@@ -1,4 +1,4 @@
-define(['../lang/isError', '../function/restParam'], function(isError, restParam) {
+define(['../internal/apply', '../lang/isError', '../function/rest'], function(apply, isError, rest) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
@@ -23,10 +23,10 @@ define(['../lang/isError', '../function/restParam'], function(isError, restParam
    *   elements = [];
    * }
    */
-  var attempt = restParam(function(func, args) {
+  var attempt = rest(function(func, args) {
     try {
-      return func.apply(undefined, args);
-    } catch(e) {
+      return apply(func, undefined, args);
+    } catch (e) {
       return isError(e) ? e : new Error(e);
     }
   });

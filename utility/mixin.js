@@ -1,4 +1,4 @@
-define(['../internal/arrayCopy', '../internal/arrayPush', '../internal/baseFunctions', '../lang/isFunction', '../lang/isObject', '../object/keys'], function(arrayCopy, arrayPush, baseFunctions, isFunction, isObject, keys) {
+define(['../internal/arrayEach', '../internal/arrayPush', '../internal/baseFunctions', '../internal/copyArray', '../lang/isFunction', '../lang/isObject', '../object/keys'], function(arrayEach, arrayPush, baseFunctions, copyArray, isFunction, isObject, keys) {
 
   /**
    * Adds all own enumerable function properties of a source object to the
@@ -37,40 +37,31 @@ define(['../internal/arrayCopy', '../internal/arrayPush', '../internal/baseFunct
    * // => ['e']
    */
   function mixin(object, source, options) {
-    var methodNames = baseFunctions(source, keys(source));
+    var props = keys(source),
+        methodNames = baseFunctions(source, props);
 
-    var chain = true,
-        index = -1,
-        isFunc = isFunction(object),
-        length = methodNames.length;
+    var chain = (isObject(options) && 'chain' in options) ? options.chain : true,
+        isFunc = isFunction(object);
 
-    if (options === false) {
-      chain = false;
-    } else if (isObject(options) && 'chain' in options) {
-      chain = options.chain;
-    }
-    while (++index < length) {
-      var methodName = methodNames[index],
-          func = source[methodName];
-
+    arrayEach(methodNames, function(methodName) {
+      var func = source[methodName];
       object[methodName] = func;
       if (isFunc) {
-        object.prototype[methodName] = (function(func) {
-          return function() {
-            var chainAll = this.__chain__;
-            if (chain || chainAll) {
-              var result = object(this.__wrapped__),
-                  actions = result.__actions__ = arrayCopy(this.__actions__);
+        object.prototype[methodName] = function() {
+          var chainAll = this.__chain__;
+          if (chain || chainAll) {
+            var result = object(this.__wrapped__),
+                actions = result.__actions__ = copyArray(this.__actions__);
 
-              actions.push({ 'func': func, 'args': arguments, 'thisArg': object });
-              result.__chain__ = chainAll;
-              return result;
-            }
-            return func.apply(object, arrayPush([this.value()], arguments));
-          };
-        }(func));
+            actions.push({ 'func': func, 'args': arguments, 'thisArg': object });
+            result.__chain__ = chainAll;
+            return result;
+          }
+          return func.apply(object, arrayPush([this.value()], arguments));
+        };
       }
-    }
+    });
+
     return object;
   }
 

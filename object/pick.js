@@ -1,20 +1,14 @@
-define(['../internal/baseFlatten', '../internal/bindCallback', '../internal/pickByArray', '../internal/pickByCallback', '../function/restParam'], function(baseFlatten, bindCallback, pickByArray, pickByCallback, restParam) {
+define(['../internal/baseFlatten', '../internal/basePick', '../function/rest'], function(baseFlatten, basePick, rest) {
 
   /**
-   * Creates an object composed of the picked `object` properties. Property
-   * names may be specified as individual arguments or as arrays of property
-   * names. If `predicate` is provided it's invoked for each property of `object`
-   * picking the properties `predicate` returns truthy for. The predicate is
-   * bound to `thisArg` and invoked with three arguments: (value, key, object).
+   * Creates an object composed of the picked `object` properties.
    *
    * @static
    * @memberOf _
    * @category Object
    * @param {Object} object The source object.
-   * @param {Function|...(string|string[])} [predicate] The function invoked per
-   *  iteration or property names to pick, specified as individual property
-   *  names or arrays of property names.
-   * @param {*} [thisArg] The `this` binding of `predicate`.
+   * @param {...(string|string[])} [props] The property names to pick, specified
+   *  individually or in arrays.
    * @returns {Object} Returns the new object.
    * @example
    *
@@ -22,17 +16,9 @@ define(['../internal/baseFlatten', '../internal/bindCallback', '../internal/pick
    *
    * _.pick(object, 'user');
    * // => { 'user': 'fred' }
-   *
-   * _.pick(object, _.isString);
-   * // => { 'user': 'fred' }
    */
-  var pick = restParam(function(object, props) {
-    if (object == null) {
-      return {};
-    }
-    return typeof props[0] == 'function'
-      ? pickByCallback(object, bindCallback(props[0], props[1], 3))
-      : pickByArray(object, baseFlatten(props));
+  var pick = rest(function(object, props) {
+    return object == null ? {} : basePick(object, baseFlatten(props));
   });
 
   return pick;

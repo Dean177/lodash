@@ -1,10 +1,4 @@
-define(['../internal/getNative', '../internal/isArrayLike', '../lang/isObject', '../internal/shimKeys'], function(getNative, isArrayLike, isObject, shimKeys) {
-
-  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
-  var undefined;
-
-  /* Native method references for those with the same name as other `lodash` methods. */
-  var nativeKeys = getNative(Object, 'keys');
+define(['../internal/baseHas', '../internal/baseKeys', '../internal/indexKeys', '../lang/isArrayLike', '../internal/isIndex', '../internal/isPrototype'], function(baseHas, baseKeys, indexKeys, isArrayLike, isIndex, isPrototype) {
 
   /**
    * Creates an array of the own enumerable property names of `object`.
@@ -33,14 +27,25 @@ define(['../internal/getNative', '../internal/isArrayLike', '../lang/isObject', 
    * _.keys('hi');
    * // => ['0', '1']
    */
-  var keys = !nativeKeys ? shimKeys : function(object) {
-    var Ctor = object == null ? undefined : object.constructor;
-    if ((typeof Ctor == 'function' && Ctor.prototype === object) ||
-        (typeof object != 'function' && isArrayLike(object))) {
-      return shimKeys(object);
+  function keys(object) {
+    var isProto = isPrototype(object);
+    if (!(isProto || isArrayLike(object))) {
+      return baseKeys(object);
     }
-    return isObject(object) ? nativeKeys(object) : [];
-  };
+    var indexes = indexKeys(object),
+        skipIndexes = !!indexes,
+        result = indexes || [],
+        length = result.length;
+
+    for (var key in object) {
+      if (baseHas(object, key) &&
+          !(skipIndexes && (key == 'length' || isIndex(key, length))) &&
+          !(isProto && key == 'constructor')) {
+        result.push(key);
+      }
+    }
+    return result;
+  }
 
   return keys;
 });

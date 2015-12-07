@@ -1,8 +1,8 @@
-define(['../internal/invokePath', '../function/restParam'], function(invokePath, restParam) {
+define(['../internal/baseInvoke', '../function/rest'], function(baseInvoke, rest) {
 
   /**
    * The opposite of `_.method`; this method creates a function that invokes
-   * the method at a given path on `object`. Any additional arguments are
+   * the method at a given path of `object`. Any additional arguments are
    * provided to the invoked method.
    *
    * @static
@@ -22,9 +22,9 @@ define(['../internal/invokePath', '../function/restParam'], function(invokePath,
    * _.map([['a', '2'], ['c', '0']], _.methodOf(object));
    * // => [2, 0]
    */
-  var methodOf = restParam(function(object, args) {
+  var methodOf = rest(function(object, args) {
     return function(path) {
-      return invokePath(object, path, args);
+      return baseInvoke(object, path, args);
     };
   });
 

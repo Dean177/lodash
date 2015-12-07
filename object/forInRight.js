@@ -1,4 +1,4 @@
-define(['../internal/baseForRight', '../internal/createForIn'], function(baseForRight, createForIn) {
+define(['../internal/baseForRight', './keysIn', '../internal/toFunction'], function(baseForRight, keysIn, toFunction) {
 
   /**
    * This method is like `_.forIn` except that it iterates over properties of
@@ -9,7 +9,6 @@ define(['../internal/baseForRight', '../internal/createForIn'], function(baseFor
    * @category Object
    * @param {Object} object The object to iterate over.
    * @param {Function} [iteratee=_.identity] The function invoked per iteration.
-   * @param {*} [thisArg] The `this` binding of `iteratee`.
    * @returns {Object} Returns `object`.
    * @example
    *
@@ -23,9 +22,11 @@ define(['../internal/baseForRight', '../internal/createForIn'], function(baseFor
    * _.forInRight(new Foo, function(value, key) {
    *   console.log(key);
    * });
-   * // => logs 'c', 'b', and 'a' assuming `_.forIn ` logs 'a', 'b', and 'c'
+   * // => logs 'c', 'b', then 'a' assuming `_.forIn` logs 'a', 'b', then 'c'
    */
-  var forInRight = createForIn(baseForRight);
+  function forInRight(object, iteratee) {
+    return object == null ? object : baseForRight(object, toFunction(iteratee), keysIn);
+  }
 
   return forInRight;
 });

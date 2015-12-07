@@ -1,4 +1,4 @@
-define(['./isArguments', './isArray', '../internal/isArrayLike', './isFunction', '../internal/isObjectLike', './isString', '../object/keys'], function(isArguments, isArray, isArrayLike, isFunction, isObjectLike, isString, keys) {
+define(['./isFunction', './isObjectLike', '../object/keys', '../collection/size'], function(isFunction, isObjectLike, keys, size) {
 
   /**
    * Checks if `value` is empty. A value is considered empty unless it's an
@@ -28,14 +28,9 @@ define(['./isArguments', './isArray', '../internal/isArrayLike', './isFunction',
    * // => false
    */
   function isEmpty(value) {
-    if (value == null) {
-      return true;
-    }
-    if (isArrayLike(value) && (isArray(value) || isString(value) || isArguments(value) ||
-        (isObjectLike(value) && isFunction(value.splice)))) {
-      return !value.length;
-    }
-    return !keys(value).length;
+    return (!isObjectLike(value) || isFunction(value.splice))
+      ? !size(value)
+      : !keys(value).length;
   }
 
   return isEmpty;

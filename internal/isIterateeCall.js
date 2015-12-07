@@ -1,4 +1,4 @@
-define(['./isArrayLike', './isIndex', '../lang/isObject'], function(isArrayLike, isIndex, isObject) {
+define(['../lang/isArrayLike', './isIndex', '../lang/isObject'], function(isArrayLike, isIndex, isObject) {
 
   /**
    * Checks if the provided arguments are from an iteratee call.

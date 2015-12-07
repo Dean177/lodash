@@ -1,4 +1,4 @@
-define(['../internal/createCompounder'], function(createCompounder) {
+define(['./capitalize', '../internal/createCompounder'], function(capitalize, createCompounder) {
 
   /**
    * Converts `string` to [start case](https://en.wikipedia.org/wiki/Letter_case#Stylistic_or_specialised_usage).
@@ -20,7 +20,7 @@ define(['../internal/createCompounder'], function(createCompounder) {
    * // => 'Foo Bar'
    */
   var startCase = createCompounder(function(result, word, index) {
-    return result + (index ? ' ' : '') + (word.charAt(0).toUpperCase() + word.slice(1));
+    return result + (index ? ' ' : '') + capitalize(word);
   });
 
   return startCase;

@@ -1,9 +1,8 @@
-define(['../internal/baseToString', '../internal/createPadding', '../internal/root'], function(baseToString, createPadding, root) {
+define(['../internal/createPadding', '../internal/stringSize', '../lang/toInteger', '../lang/toString'], function(createPadding, stringSize, toInteger, toString) {
 
-  /* Native method references for those with the same name as other `lodash` methods. */
+  /* Built-in method references for those with the same name as other `lodash` methods. */
   var nativeCeil = Math.ceil,
-      nativeFloor = Math.floor,
-      nativeIsFinite = root.isFinite;
+      nativeFloor = Math.floor;
 
   /**
    * Pads `string` on the left and right sides if it's shorter than `length`.
@@ -28,19 +27,18 @@ define(['../internal/baseToString', '../internal/createPadding', '../internal/ro
    * // => 'abc'
    */
   function pad(string, length, chars) {
-    string = baseToString(string);
-    length = +length;
+    string = toString(string);
+    length = toInteger(length);
 
-    var strLength = string.length;
-    if (strLength >= length || !nativeIsFinite(length)) {
+    var strLength = stringSize(string);
+    if (!length || strLength >= length) {
       return string;
     }
     var mid = (length - strLength) / 2,
         leftLength = nativeFloor(mid),
         rightLength = nativeCeil(mid);
 
-    chars = createPadding('', rightLength, chars);
-    return chars.slice(0, leftLength) + string + chars;
+    return createPadding('', leftLength, chars) + string + createPadding('', rightLength, chars);
   }
 
   return pad;

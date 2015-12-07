@@ -1,6 +1,6 @@
 define([], function() {
 
-  /** Used for native method references. */
+  /** Used for built-in method references. */
   var objectProto = Object.prototype;
 
   /** Used to check objects for own properties. */

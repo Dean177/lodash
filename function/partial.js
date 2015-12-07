@@ -1,4 +1,7 @@
-define(['../internal/createPartial'], function(createPartial) {
+define(['../internal/createWrapper', '../internal/replaceHolders', './rest'], function(createWrapper, replaceHolders, rest) {
+
+  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
+  var undefined;
 
   /** Used to compose bitmasks for wrapper metadata. */
   var PARTIAL_FLAG = 32;
@@ -11,7 +14,7 @@ define(['../internal/createPartial'], function(createPartial) {
    * The `_.partial.placeholder` value, which defaults to `_` in monolithic
    * builds, may be used as a placeholder for partially applied arguments.
    *
-   * **Note:** This method does not set the "length" property of partially
+   * **Note:** This method doesn't set the "length" property of partially
    * applied functions.
    *
    * @static
@@ -35,10 +38,10 @@ define(['../internal/createPartial'], function(createPartial) {
    * greetFred('hi');
    * // => 'hi fred'
    */
-  var partial = createPartial(PARTIAL_FLAG);
-
-  // Assign default placeholders.
-  partial.placeholder = {};
+  var partial = rest(function(func, partials) {
+    var holders = replaceHolders(partials, partial.placeholder);
+    return createWrapper(func, PARTIAL_FLAG, undefined, partials, holders);
+  });
 
   return partial;
 });

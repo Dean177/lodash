@@ -1,4 +1,4 @@
-define(['../internal/arrayMap', '../internal/baseDifference', '../internal/baseFlatten', '../internal/bindCallback', './keysIn', '../internal/pickByArray', '../internal/pickByCallback', '../function/restParam'], function(arrayMap, baseDifference, baseFlatten, bindCallback, keysIn, pickByArray, pickByCallback, restParam) {
+define(['../internal/arrayMap', '../internal/baseDifference', '../internal/baseFlatten', '../internal/basePick', './keysIn', '../function/rest'], function(arrayMap, baseDifference, baseFlatten, basePick, keysIn, rest) {
 
   /**
    * The opposite of `_.pick`; this method creates an object composed of the
@@ -8,33 +8,22 @@ define(['../internal/arrayMap', '../internal/baseDifference', '../internal/baseF
    * @memberOf _
    * @category Object
    * @param {Object} object The source object.
-   * @param {Function|...(string|string[])} [predicate] The function invoked per
-   *  iteration or property names to omit, specified as individual property
-   *  names or arrays of property names.
-   * @param {*} [thisArg] The `this` binding of `predicate`.
+   * @param {...(string|string[])} [props] The property names to omit, specified
+   *  individually or in arrays..
    * @returns {Object} Returns the new object.
    * @example
    *
    * var object = { 'user': 'fred', 'age': 40 };
    *
-   * _.omit(object, 'age');
-   * // => { 'user': 'fred' }
-   *
-   * _.omit(object, _.isNumber);
-   * // => { 'user': 'fred' }
+   * _.omit(object, 'user');
+   * // => { 'age': 40 }
    */
-  var omit = restParam(function(object, props) {
+  var omit = rest(function(object, props) {
     if (object == null) {
       return {};
     }
-    if (typeof props[0] != 'function') {
-      var props = arrayMap(baseFlatten(props), String);
-      return pickByArray(object, baseDifference(keysIn(object), props));
-    }
-    var predicate = bindCallback(props[0], props[1], 3);
-    return pickByCallback(object, function(value, key, object) {
-      return !predicate(value, key, object);
-    });
+    props = arrayMap(baseFlatten(props), String);
+    return basePick(object, baseDifference(keysIn(object), props));
   });
 
   return omit;

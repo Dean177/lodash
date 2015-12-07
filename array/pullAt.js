@@ -1,9 +1,8 @@
-define(['../internal/baseAt', '../internal/baseCompareAscending', '../internal/baseFlatten', '../internal/basePullAt', '../function/restParam'], function(baseAt, baseCompareAscending, baseFlatten, basePullAt, restParam) {
+define(['../internal/arrayMap', '../internal/baseAt', '../internal/baseFlatten', '../internal/basePullAt', '../internal/compareAscending', '../function/rest'], function(arrayMap, baseAt, baseFlatten, basePullAt, compareAscending, rest) {
 
   /**
-   * Removes elements from `array` corresponding to the given indexes and returns
-   * an array of the removed elements. Indexes may be specified as an array of
-   * indexes or as individual arguments.
+   * Removes elements from `array` corresponding to `indexes` and returns an
+   * array of removed elements.
    *
    * **Note:** Unlike `_.at`, this method mutates `array`.
    *
@@ -12,7 +11,7 @@ define(['../internal/baseAt', '../internal/baseCompareAscending', '../internal/b
    * @category Array
    * @param {Array} array The array to modify.
    * @param {...(number|number[])} [indexes] The indexes of elements to remove,
-   *  specified as individual indexes or arrays of indexes.
+   *  specified individually or in arrays.
    * @returns {Array} Returns the new array of removed elements.
    * @example
    *
@@ -25,11 +24,11 @@ define(['../internal/baseAt', '../internal/baseCompareAscending', '../internal/b
    * console.log(evens);
    * // => [10, 20]
    */
-  var pullAt = restParam(function(array, indexes) {
-    indexes = baseFlatten(indexes);
+  var pullAt = rest(function(array, indexes) {
+    indexes = arrayMap(baseFlatten(indexes), String);
 
     var result = baseAt(array, indexes);
-    basePullAt(array, indexes.sort(baseCompareAscending));
+    basePullAt(array, indexes.sort(compareAscending));
     return result;
   });
 

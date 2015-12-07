@@ -1,17 +1,16 @@
-define(['../internal/baseFor', '../internal/createForIn'], function(baseFor, createForIn) {
+define(['../internal/baseFor', './keysIn', '../internal/toFunction'], function(baseFor, keysIn, toFunction) {
 
   /**
    * Iterates over own and inherited enumerable properties of an object invoking
-   * `iteratee` for each property. The `iteratee` is bound to `thisArg` and invoked
-   * with three arguments: (value, key, object). Iteratee functions may exit
-   * iteration early by explicitly returning `false`.
+   * `iteratee` for each property. The iteratee is invoked with three arguments:
+   * (value, key, object). Iteratee functions may exit iteration early by explicitly
+   * returning `false`.
    *
    * @static
    * @memberOf _
    * @category Object
    * @param {Object} object The object to iterate over.
    * @param {Function} [iteratee=_.identity] The function invoked per iteration.
-   * @param {*} [thisArg] The `this` binding of `iteratee`.
    * @returns {Object} Returns `object`.
    * @example
    *
@@ -25,9 +24,11 @@ define(['../internal/baseFor', '../internal/createForIn'], function(baseFor, cre
    * _.forIn(new Foo, function(value, key) {
    *   console.log(key);
    * });
-   * // => logs 'a', 'b', and 'c' (iteration order is not guaranteed)
+   * // => logs 'a', 'b', then 'c' (iteration order is not guaranteed)
    */
-  var forIn = createForIn(baseFor);
+  function forIn(object, iteratee) {
+    return object == null ? object : baseFor(object, toFunction(iteratee), keysIn);
+  }
 
   return forIn;
 });

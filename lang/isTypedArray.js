@@ -1,4 +1,4 @@
-define(['../internal/isLength', '../internal/isObjectLike'], function(isLength, isObjectLike) {
+define(['./isLength', './isObjectLike'], function(isLength, isObjectLike) {
 
   /** `Object#toString` result references. */
   var argsTag = '[object Arguments]',
@@ -41,7 +41,7 @@ define(['../internal/isLength', '../internal/isObjectLike'], function(isLength, 
   typedArrayTags[regexpTag] = typedArrayTags[setTag] =
   typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
 
-  /** Used for native method references. */
+  /** Used for built-in method references. */
   var objectProto = Object.prototype;
 
   /**

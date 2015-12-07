@@ -1,4 +1,4 @@
-define(['../internal/createObjectMapper'], function(createObjectMapper) {
+define(['../internal/baseForOwn', '../internal/baseIteratee'], function(baseForOwn, baseIteratee) {
 
   /**
    * The opposite of `_.mapValues`; this method creates an object with the
@@ -9,9 +9,7 @@ define(['../internal/createObjectMapper'], function(createObjectMapper) {
    * @memberOf _
    * @category Object
    * @param {Object} object The object to iterate over.
-   * @param {Function|Object|string} [iteratee=_.identity] The function invoked
-   *  per iteration.
-   * @param {*} [thisArg] The `this` binding of `iteratee`.
+   * @param {Function|Object|string} [iteratee=_.identity] The function invoked per iteration.
    * @returns {Object} Returns the new mapped object.
    * @example
    *
@@ -20,7 +18,15 @@ define(['../internal/createObjectMapper'], function(createObjectMapper) {
    * });
    * // => { 'a1': 1, 'b2': 2 }
    */
-  var mapKeys = createObjectMapper(true);
+  function mapKeys(object, iteratee) {
+    var result = {};
+    iteratee = baseIteratee(iteratee, 3);
+
+    baseForOwn(object, function(value, key, object) {
+      result[iteratee(value, key, object)] = value;
+    });
+    return result;
+  }
 
   return mapKeys;
 });

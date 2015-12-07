@@ -1,4 +1,4 @@
-define(['../internal/createWrapper', '../internal/replaceHolders', './restParam'], function(createWrapper, replaceHolders, restParam) {
+define(['../internal/createWrapper', '../internal/replaceHolders', './rest'], function(createWrapper, replaceHolders, rest) {
 
   /** Used to compose bitmasks for wrapper metadata. */
   var BIND_FLAG = 1,
@@ -49,7 +49,7 @@ define(['../internal/createWrapper', '../internal/replaceHolders', './restParam'
    * bound('hi');
    * // => 'hiya fred!'
    */
-  var bindKey = restParam(function(object, key, partials) {
+  var bindKey = rest(function(object, key, partials) {
     var bitmask = BIND_FLAG | BIND_KEY_FLAG;
     if (partials.length) {
       var holders = replaceHolders(partials, bindKey.placeholder);
@@ -57,9 +57,6 @@ define(['../internal/createWrapper', '../internal/replaceHolders', './restParam'
     }
     return createWrapper(key, bitmask, object, partials, holders);
   });
-
-  // Assign default placeholders.
-  bindKey.placeholder = {};
 
   return bindKey;
 });

@@ -1,9 +1,9 @@
-define(['../internal/isObjectLike'], function(isObjectLike) {
+define(['./isArray', './isObjectLike'], function(isArray, isObjectLike) {
 
   /** `Object#toString` result references. */
   var stringTag = '[object String]';
 
-  /** Used for native method references. */
+  /** Used for built-in method references. */
   var objectProto = Object.prototype;
 
   /**
@@ -29,7 +29,8 @@ define(['../internal/isObjectLike'], function(isObjectLike) {
    * // => false
    */
   function isString(value) {
-    return typeof value == 'string' || (isObjectLike(value) && objToString.call(value) == stringTag);
+    return typeof value == 'string' ||
+      (!isArray(value) && isObjectLike(value) && objToString.call(value) == stringTag);
   }
 
   return isString;

@@ -1,7 +1,8 @@
-define(['../internal/baseToString'], function(baseToString) {
+define(['../lang/toString', './upperFirst'], function(toString, upperFirst) {
 
   /**
-   * Capitalizes the first character of `string`.
+   * Converts the first character of `string` to upper case and the remaining
+   * to lower case.
    *
    * @static
    * @memberOf _
@@ -10,12 +11,11 @@ define(['../internal/baseToString'], function(baseToString) {
    * @returns {string} Returns the capitalized string.
    * @example
    *
-   * _.capitalize('fred');
+   * _.capitalize('FRED');
    * // => 'Fred'
    */
   function capitalize(string) {
-    string = baseToString(string);
-    return string && (string.charAt(0).toUpperCase() + string.slice(1));
+    return upperFirst(toString(string).toLowerCase());
   }
 
   return capitalize;

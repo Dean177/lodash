@@ -1,4 +1,7 @@
-define(['../internal/baseEachRight', '../internal/createFind'], function(baseEachRight, createFind) {
+define(['../internal/baseEachRight', '../internal/baseFind', '../internal/baseFindIndex', '../internal/baseIteratee', '../lang/isArray'], function(baseEachRight, baseFind, baseFindIndex, baseIteratee, isArray) {
+
+  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
+  var undefined;
 
   /**
    * This method is like `_.find` except that it iterates over elements of
@@ -7,10 +10,8 @@ define(['../internal/baseEachRight', '../internal/createFind'], function(baseEac
    * @static
    * @memberOf _
    * @category Collection
-   * @param {Array|Object|string} collection The collection to search.
-   * @param {Function|Object|string} [predicate=_.identity] The function invoked
-   *  per iteration.
-   * @param {*} [thisArg] The `this` binding of `predicate`.
+   * @param {Array|Object} collection The collection to search.
+   * @param {Function|Object|string} [predicate=_.identity] The function invoked per iteration.
    * @returns {*} Returns the matched element, else `undefined`.
    * @example
    *
@@ -19,7 +20,14 @@ define(['../internal/baseEachRight', '../internal/createFind'], function(baseEac
    * });
    * // => 3
    */
-  var findLast = createFind(baseEachRight, true);
+  function findLast(collection, predicate) {
+    predicate = baseIteratee(predicate, 3);
+    if (isArray(collection)) {
+      var index = baseFindIndex(collection, predicate, true);
+      return index > -1 ? collection[index] : undefined;
+    }
+    return baseFind(collection, predicate, baseEachRight);
+  }
 
   return findLast;
 });

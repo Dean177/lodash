@@ -2,7 +2,7 @@ define([], function() {
 
   /**
    * A specialized version of `_.map` for arrays without support for callback
-   * shorthands and `this` binding.
+   * shorthands.
    *
    * @private
    * @param {Array} array The array to iterate over.

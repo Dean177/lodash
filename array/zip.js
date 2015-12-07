@@ -1,4 +1,4 @@
-define(['../function/restParam', './unzip'], function(restParam, unzip) {
+define(['../function/rest', './unzip'], function(rest, unzip) {
 
   /**
    * Creates an array of grouped elements, the first of which contains the first
@@ -15,7 +15,7 @@ define(['../function/restParam', './unzip'], function(restParam, unzip) {
    * _.zip(['fred', 'barney'], [30, 40], [true, false]);
    * // => [['fred', 30, true], ['barney', 40, false]]
    */
-  var zip = restParam(unzip);
+  var zip = rest(unzip);
 
   return zip;
 });

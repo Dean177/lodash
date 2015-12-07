@@ -1,4 +1,4 @@
-define(['../internal/arrayPush', '../internal/baseDifference', '../internal/baseUniq', '../internal/isArrayLike'], function(arrayPush, baseDifference, baseUniq, isArrayLike) {
+define(['../internal/arrayFilter', '../internal/baseXor', '../lang/isArrayLikeObject', '../function/rest'], function(arrayFilter, baseXor, isArrayLikeObject, rest) {
 
   /**
    * Creates an array of unique values that is the [symmetric difference](https://en.wikipedia.org/wiki/Symmetric_difference)
@@ -11,23 +11,12 @@ define(['../internal/arrayPush', '../internal/baseDifference', '../internal/base
    * @returns {Array} Returns the new array of values.
    * @example
    *
-   * _.xor([1, 2], [4, 2]);
+   * _.xor([2, 1], [4, 2]);
    * // => [1, 4]
    */
-  function xor() {
-    var index = -1,
-        length = arguments.length;
-
-    while (++index < length) {
-      var array = arguments[index];
-      if (isArrayLike(array)) {
-        var result = result
-          ? arrayPush(baseDifference(result, array), baseDifference(array, result))
-          : array;
-      }
-    }
-    return result ? baseUniq(result) : [];
-  }
+  var xor = rest(function(arrays) {
+    return baseXor(arrayFilter(arrays, isArrayLikeObject));
+  });
 
   return xor;
 });

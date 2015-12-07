@@ -1,30 +1,25 @@
-define(['../internal/baseSortByOrder', '../lang/isArray', '../internal/isIterateeCall'], function(baseSortByOrder, isArray, isIterateeCall) {
+define(['../internal/baseSortByOrder', '../lang/isArray'], function(baseSortByOrder, isArray) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
 
   /**
-   * This method is like `_.sortByAll` except that it allows specifying the
+   * This method is like `_.sortBy` except that it allows specifying the
    * sort orders of the iteratees to sort by. If `orders` is unspecified, all
    * values are sorted in ascending order. Otherwise, a value is sorted in
    * ascending order if its corresponding order is "asc", and descending if "desc".
    *
-   * If a property name is provided for an iteratee the created `_.property`
-   * style callback returns the property value of the given element.
-   *
-   * If an object is provided for an iteratee the created `_.matches` style
-   * callback returns `true` for elements that have the properties of the given
-   * object, else `false`.
-   *
    * @static
    * @memberOf _
    * @category Collection
-   * @param {Array|Object|string} collection The collection to iterate over.
-   * @param {Function[]|Object[]|string[]} iteratees The iteratees to sort by.
-   * @param {boolean[]} [orders] The sort orders of `iteratees`.
-   * @param- {Object} [guard] Enables use as a callback for functions like `_.reduce`.
+   * @param {Array|Object} collection The collection to iterate over.
+   * @param {Function[]|Object[]|string[]} [iteratees=[_.identity]] The iteratees to sort by.
+   * @param {string[]} [orders] The sort orders of `iteratees`.
+   * @param- {Object} [guard] Enables use as an iteratee for functions like `_.reduce`.
    * @returns {Array} Returns the new sorted array.
    * @example
+   *
+   * var resolve = _.partial(_.map, _, _.values);
    *
    * var users = [
    *   { 'user': 'fred',   'age': 48 },
@@ -34,19 +29,17 @@ define(['../internal/baseSortByOrder', '../lang/isArray', '../internal/isIterate
    * ];
    *
    * // sort by `user` in ascending order and by `age` in descending order
-   * _.map(_.sortByOrder(users, ['user', 'age'], ['asc', 'desc']), _.values);
+   * resolve( _.sortByOrder(users, ['user', 'age'], ['asc', 'desc']) );
    * // => [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 42]]
    */
   function sortByOrder(collection, iteratees, orders, guard) {
     if (collection == null) {
       return [];
     }
-    if (guard && isIterateeCall(iteratees, orders, guard)) {
-      orders = undefined;
-    }
     if (!isArray(iteratees)) {
       iteratees = iteratees == null ? [] : [iteratees];
     }
+    orders = guard ? undefined : orders;
     if (!isArray(orders)) {
       orders = orders == null ? [] : [orders];
     }

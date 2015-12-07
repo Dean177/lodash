@@ -1,4 +1,4 @@
-define(['../internal/baseFlatten', '../internal/baseUniq', '../function/restParam'], function(baseFlatten, baseUniq, restParam) {
+define(['../internal/baseFlatten', '../internal/baseUniq', '../function/rest'], function(baseFlatten, baseUniq, rest) {
 
   /**
    * Creates an array of unique values, in order, from all of the provided arrays
@@ -12,10 +12,10 @@ define(['../internal/baseFlatten', '../internal/baseUniq', '../function/restPara
    * @returns {Array} Returns the new array of combined values.
    * @example
    *
-   * _.union([1, 2], [4, 2], [2, 1]);
-   * // => [1, 2, 4]
+   * _.union([2, 1], [4, 2], [1, 2]);
+   * // => [2, 1, 4]
    */
-  var union = restParam(function(arrays) {
+  var union = rest(function(arrays) {
     return baseUniq(baseFlatten(arrays, false, true));
   });
 

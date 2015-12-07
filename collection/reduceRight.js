@@ -1,4 +1,4 @@
-define(['../internal/arrayReduceRight', '../internal/baseEachRight', '../internal/createReduce'], function(arrayReduceRight, baseEachRight, createReduce) {
+define(['../internal/arrayReduceRight', '../internal/baseEachRight', '../internal/baseIteratee', '../internal/baseReduce', '../lang/isArray'], function(arrayReduceRight, baseEachRight, baseIteratee, baseReduce, isArray) {
 
   /**
    * This method is like `_.reduce` except that it iterates over elements of
@@ -6,12 +6,10 @@ define(['../internal/arrayReduceRight', '../internal/baseEachRight', '../interna
    *
    * @static
    * @memberOf _
-   * @alias foldr
    * @category Collection
-   * @param {Array|Object|string} collection The collection to iterate over.
+   * @param {Array|Object} collection The collection to iterate over.
    * @param {Function} [iteratee=_.identity] The function invoked per iteration.
    * @param {*} [accumulator] The initial value.
-   * @param {*} [thisArg] The `this` binding of `iteratee`.
    * @returns {*} Returns the accumulated value.
    * @example
    *
@@ -22,7 +20,12 @@ define(['../internal/arrayReduceRight', '../internal/baseEachRight', '../interna
    * }, []);
    * // => [4, 5, 2, 3, 0, 1]
    */
-  var reduceRight = createReduce(arrayReduceRight, baseEachRight);
+  function reduceRight(collection, iteratee, accumulator) {
+    var initFromCollection = arguments.length < 3;
+    return (typeof iteratee == 'function' && isArray(collection))
+      ? arrayReduceRight(collection, iteratee, accumulator, initFromCollection)
+      : baseReduce(collection, baseIteratee(iteratee, 4), accumulator, initFromCollection, baseEachRight);
+  }
 
   return reduceRight;
 });

@@ -1,6 +1,6 @@
-define(['../internal/arrayFilter', '../internal/arrayMap', '../internal/baseProperty', '../internal/isArrayLike'], function(arrayFilter, arrayMap, baseProperty, isArrayLike) {
+define(['../internal/arrayFilter', '../internal/arrayMap', '../internal/baseProperty', '../internal/baseTimes', '../lang/isArrayLikeObject'], function(arrayFilter, arrayMap, baseProperty, baseTimes, isArrayLikeObject) {
 
-  /* Native method references for those with the same name as other `lodash` methods. */
+  /* Built-in method references for those with the same name as other `lodash` methods. */
   var nativeMax = Math.max;
 
   /**
@@ -25,20 +25,16 @@ define(['../internal/arrayFilter', '../internal/arrayMap', '../internal/baseProp
     if (!(array && array.length)) {
       return [];
     }
-    var index = -1,
-        length = 0;
-
+    var length = 0;
     array = arrayFilter(array, function(group) {
-      if (isArrayLike(group)) {
+      if (isArrayLikeObject(group)) {
         length = nativeMax(group.length, length);
         return true;
       }
     });
-    var result = Array(length);
-    while (++index < length) {
-      result[index] = arrayMap(array, baseProperty(index));
-    }
-    return result;
+    return baseTimes(length, function(index) {
+      return arrayMap(array, baseProperty(index));
+    });
   }
 
   return unzip;

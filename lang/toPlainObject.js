@@ -1,4 +1,4 @@
-define(['../internal/baseCopy', '../object/keysIn'], function(baseCopy, keysIn) {
+define(['../internal/copyObject', '../object/keysIn'], function(copyObject, keysIn) {
 
   /**
    * Converts `value` to a plain object flattening inherited enumerable
@@ -24,7 +24,7 @@ define(['../internal/baseCopy', '../object/keysIn'], function(baseCopy, keysIn) 
    * // => { 'a': 1, 'b': 2, 'c': 3 }
    */
   function toPlainObject(value) {
-    return baseCopy(value, keysIn(value));
+    return copyObject(value, keysIn(value));
   }
 
   return toPlainObject;

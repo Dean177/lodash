@@ -7,7 +7,7 @@ define(['./baseWrapperValue', './getView', '../lang/isArray'], function(baseWrap
   var LAZY_FILTER_FLAG = 1,
       LAZY_MAP_FLAG = 2;
 
-  /* Native method references for those with the same name as other `lodash` methods. */
+  /* Built-in method references for those with the same name as other `lodash` methods. */
   var nativeMin = Math.min;
 
   /**

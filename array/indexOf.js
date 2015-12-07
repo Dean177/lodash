@@ -1,6 +1,6 @@
-define(['../internal/baseIndexOf', '../internal/binaryIndex'], function(baseIndexOf, binaryIndex) {
+define(['../internal/baseIndexOf', '../lang/toInteger'], function(baseIndexOf, toInteger) {
 
-  /* Native method references for those with the same name as other `lodash` methods. */
+  /* Built-in method references for those with the same name as other `lodash` methods. */
   var nativeMax = Math.max;
 
   /**
@@ -15,8 +15,7 @@ define(['../internal/baseIndexOf', '../internal/binaryIndex'], function(baseInde
    * @category Array
    * @param {Array} array The array to search.
    * @param {*} value The value to search for.
-   * @param {boolean|number} [fromIndex=0] The index to search from or `true`
-   *  to perform a binary search on a sorted array.
+   * @param {number} [fromIndex=0] The index to search from.
    * @returns {number} Returns the index of the matched value, else `-1`.
    * @example
    *
@@ -26,27 +25,17 @@ define(['../internal/baseIndexOf', '../internal/binaryIndex'], function(baseInde
    * // using `fromIndex`
    * _.indexOf([1, 2, 1, 2], 2, 2);
    * // => 3
-   *
-   * // performing a binary search
-   * _.indexOf([1, 1, 2, 2], 2, true);
-   * // => 2
    */
   function indexOf(array, value, fromIndex) {
     var length = array ? array.length : 0;
     if (!length) {
       return -1;
     }
-    if (typeof fromIndex == 'number') {
-      fromIndex = fromIndex < 0 ? nativeMax(length + fromIndex, 0) : fromIndex;
-    } else if (fromIndex) {
-      var index = binaryIndex(array, value);
-      if (index < length &&
-          (value === value ? (value === array[index]) : (array[index] !== array[index]))) {
-        return index;
-      }
-      return -1;
+    fromIndex = toInteger(fromIndex);
+    if (fromIndex < 0) {
+      fromIndex = nativeMax(length + fromIndex, 0);
     }
-    return baseIndexOf(array, value, fromIndex || 0);
+    return baseIndexOf(array, value, fromIndex);
   }
 
   return indexOf;

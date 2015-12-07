@@ -1,16 +1,25 @@
-define(['../internal/isArrayLike', '../internal/isObjectLike'], function(isArrayLike, isObjectLike) {
+define(['./isArrayLikeObject'], function(isArrayLikeObject) {
 
-  /** Used for native method references. */
+  /** `Object#toString` result references. */
+  var argsTag = '[object Arguments]';
+
+  /** Used for built-in method references. */
   var objectProto = Object.prototype;
 
   /** Used to check objects for own properties. */
   var hasOwnProperty = objectProto.hasOwnProperty;
 
-  /** Native method references. */
+  /**
+   * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+   * of values.
+   */
+  var objToString = objectProto.toString;
+
+  /** Built-in value references. */
   var propertyIsEnumerable = objectProto.propertyIsEnumerable;
 
   /**
-   * Checks if `value` is classified as an `arguments` object.
+   * Checks if `value` is likely an `arguments` object.
    *
    * @static
    * @memberOf _
@@ -26,8 +35,9 @@ define(['../internal/isArrayLike', '../internal/isObjectLike'], function(isArray
    * // => false
    */
   function isArguments(value) {
-    return isObjectLike(value) && isArrayLike(value) &&
-      hasOwnProperty.call(value, 'callee') && !propertyIsEnumerable.call(value, 'callee');
+    // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+    return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+      (!propertyIsEnumerable.call(value, 'callee') || objToString.call(value) == argsTag);
   }
 
   return isArguments;

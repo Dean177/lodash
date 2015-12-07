@@ -1,4 +1,4 @@
-define(['../internal/createWrapper', '../internal/isIterateeCall'], function(createWrapper, isIterateeCall) {
+define(['../internal/createWrapper'], function(createWrapper) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
@@ -6,11 +6,8 @@ define(['../internal/createWrapper', '../internal/isIterateeCall'], function(cre
   /** Used to compose bitmasks for wrapper metadata. */
   var ARY_FLAG = 128;
 
-  /* Native method references for those with the same name as other `lodash` methods. */
-  var nativeMax = Math.max;
-
   /**
-   * Creates a function that accepts up to `n` arguments ignoring any
+   * Creates a function that accepts up to `n` arguments, ignoring any
    * additional arguments.
    *
    * @static
@@ -18,7 +15,7 @@ define(['../internal/createWrapper', '../internal/isIterateeCall'], function(cre
    * @category Function
    * @param {Function} func The function to cap arguments for.
    * @param {number} [n=func.length] The arity cap.
-   * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+   * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
    * @returns {Function} Returns the new function.
    * @example
    *
@@ -26,10 +23,8 @@ define(['../internal/createWrapper', '../internal/isIterateeCall'], function(cre
    * // => [6, 8, 10]
    */
   function ary(func, n, guard) {
-    if (guard && isIterateeCall(func, n, guard)) {
-      n = undefined;
-    }
-    n = (func && n == null) ? func.length : nativeMax(+n || 0, 0);
+    n = guard ? undefined : n;
+    n = (func && n == null) ? func.length : n;
     return createWrapper(func, ARY_FLAG, undefined, undefined, undefined, undefined, n);
   }
 

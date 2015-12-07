@@ -1,4 +1,4 @@
-define(['../internal/baseFlatten', '../internal/createWrapper', './restParam'], function(baseFlatten, createWrapper, restParam) {
+define(['../internal/baseFlatten', '../internal/createWrapper', './rest'], function(baseFlatten, createWrapper, rest) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
@@ -17,7 +17,7 @@ define(['../internal/baseFlatten', '../internal/createWrapper', './restParam'], 
    * @category Function
    * @param {Function} func The function to rearrange arguments for.
    * @param {...(number|number[])} indexes The arranged argument indexes,
-   *  specified as individual indexes or arrays of indexes.
+   *  specified individually or in arrays.
    * @returns {Function} Returns the new function.
    * @example
    *
@@ -27,14 +27,8 @@ define(['../internal/baseFlatten', '../internal/createWrapper', './restParam'], 
    *
    * rearged('b', 'c', 'a')
    * // => ['a', 'b', 'c']
-   *
-   * var map = _.rearg(_.map, [1, 0]);
-   * map(function(n) {
-   *   return n * 3;
-   * }, [1, 2, 3]);
-   * // => [3, 6, 9]
    */
-  var rearg = restParam(function(func, indexes) {
+  var rearg = rest(function(func, indexes) {
     return createWrapper(func, REARG_FLAG, undefined, undefined, undefined, baseFlatten(indexes));
   });
 

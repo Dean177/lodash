@@ -1,4 +1,4 @@
-define(['../internal/baseDifference', '../internal/baseFlatten', '../internal/isArrayLike', '../internal/isObjectLike', '../function/restParam'], function(baseDifference, baseFlatten, isArrayLike, isObjectLike, restParam) {
+define(['../internal/baseDifference', '../internal/baseFlatten', '../lang/isArrayLikeObject', '../function/rest'], function(baseDifference, baseFlatten, isArrayLikeObject, rest) {
 
   /**
    * Creates an array of unique `array` values not included in the other
@@ -9,15 +9,15 @@ define(['../internal/baseDifference', '../internal/baseFlatten', '../internal/is
    * @memberOf _
    * @category Array
    * @param {Array} array The array to inspect.
-   * @param {...Array} [values] The arrays of values to exclude.
+   * @param {...Array} [values] The values to exclude.
    * @returns {Array} Returns the new array of filtered values.
    * @example
    *
-   * _.difference([1, 2, 3], [4, 2]);
-   * // => [1, 3]
+   * _.difference([3, 2, 1], [4, 2]);
+   * // => [3, 1]
    */
-  var difference = restParam(function(array, values) {
-    return (isObjectLike(array) && isArrayLike(array))
+  var difference = rest(function(array, values) {
+    return isArrayLikeObject(array)
       ? baseDifference(array, baseFlatten(values, false, true))
       : [];
   });

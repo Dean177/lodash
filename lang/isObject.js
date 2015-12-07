@@ -17,7 +17,10 @@ define([], function() {
    * _.isObject([1, 2, 3]);
    * // => true
    *
-   * _.isObject(1);
+   * _.isObject(_.noop);
+   * // => true
+   *
+   * _.isObject(null);
    * // => false
    */
   function isObject(value) {

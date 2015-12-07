@@ -1,8 +1,11 @@
-define(['../internal/baseGet', '../internal/toPath'], function(baseGet, toPath) {
+define(['../internal/baseGet'], function(baseGet) {
+
+  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
+  var undefined;
 
   /**
    * The opposite of `_.property`; this method creates a function that returns
-   * the property value at a given path on `object`.
+   * the value at a given path of `object`.
    *
    * @static
    * @memberOf _
@@ -22,7 +25,7 @@ define(['../internal/baseGet', '../internal/toPath'], function(baseGet, toPath) 
    */
   function propertyOf(object) {
     return function(path) {
-      return baseGet(object, toPath(path), (path + ''));
+      return object == null ? undefined : baseGet(object, path);
     };
   }
 

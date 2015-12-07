@@ -26,7 +26,7 @@ define(['../internal/baseValues', './keys'], function(baseValues, keys) {
    * // => ['h', 'i']
    */
   function values(object) {
-    return baseValues(object, keys(object));
+    return object ? baseValues(object, keys(object)) : [];
   }
 
   return values;

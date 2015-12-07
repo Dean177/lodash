@@ -1,4 +1,7 @@
-define(['../internal/baseSlice', '../internal/isIterateeCall'], function(baseSlice, isIterateeCall) {
+define(['../internal/baseSlice', '../lang/toInteger'], function(baseSlice, toInteger) {
+
+  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
+  var undefined;
 
   /**
    * Creates a slice of `array` with `n` elements taken from the end.
@@ -8,7 +11,7 @@ define(['../internal/baseSlice', '../internal/isIterateeCall'], function(baseSli
    * @category Array
    * @param {Array} array The array to query.
    * @param {number} [n=1] The number of elements to take.
-   * @param- {Object} [guard] Enables use as a callback for functions like `_.map`.
+   * @param- {Object} [guard] Enables use as an iteratee for functions like `_.map`.
    * @returns {Array} Returns the slice of `array`.
    * @example
    *
@@ -29,10 +32,8 @@ define(['../internal/baseSlice', '../internal/isIterateeCall'], function(baseSli
     if (!length) {
       return [];
     }
-    if (guard ? isIterateeCall(array, n, guard) : n == null) {
-      n = 1;
-    }
-    n = length - (+n || 0);
+    n = (guard || n === undefined) ? 1 : toInteger(n);
+    n = length - n;
     return baseSlice(array, n < 0 ? 0 : n);
   }
 

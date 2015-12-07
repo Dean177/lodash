@@ -1,4 +1,4 @@
-define(['../lang/isObject', '../date/now'], function(isObject, now) {
+define(['../lang/isObject', '../date/now', '../lang/toNumber'], function(isObject, now, toNumber) {
 
   /** Used as a safe reference for `undefined` in pre-ES5 environments. */
   var undefined;
@@ -6,17 +6,18 @@ define(['../lang/isObject', '../date/now'], function(isObject, now) {
   /** Used as the `TypeError` message for "Functions" methods. */
   var FUNC_ERROR_TEXT = 'Expected a function';
 
-  /* Native method references for those with the same name as other `lodash` methods. */
+  /* Built-in method references for those with the same name as other `lodash` methods. */
   var nativeMax = Math.max;
 
   /**
    * Creates a debounced function that delays invoking `func` until after `wait`
    * milliseconds have elapsed since the last time the debounced function was
    * invoked. The debounced function comes with a `cancel` method to cancel
-   * delayed invocations. Provide an options object to indicate that `func`
-   * should be invoked on the leading and/or trailing edge of the `wait` timeout.
-   * Subsequent calls to the debounced function return the result of the last
-   * `func` invocation.
+   * delayed `func` invocations and a `flush` method to immediately invoke them.
+   * Provide an options object to indicate whether `func` should be invoked on
+   * the leading and/or trailing edge of the `wait` timeout. The `func` is invoked
+   * with the last arguments provided to the debounced function. Subsequent calls
+   * to the debounced function return the result of the last `func` invocation.
    *
    * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
    * on the trailing edge of the timeout only if the the debounced function is
@@ -55,7 +56,7 @@ define(['../lang/isObject', '../date/now'], function(isObject, now) {
    *   'maxWait': 1000
    * }));
    *
-   * // cancel a debounced call
+   * // cancel a debounced invocation
    * var todoChanges = _.debounce(batchLog, 1000);
    * Object.observe(models.todo, todoChanges);
    *
@@ -69,7 +70,7 @@ define(['../lang/isObject', '../date/now'], function(isObject, now) {
    * models.todo.completed = true;
    *
    * // ...before 1 second has passed `models.todo` is deleted
-   * // which cancels the debounced `todoChanges` call
+   * // which cancels the debounced `todoChanges` invocation
    * delete models.todo;
    */
   function debounce(func, wait, options) {
@@ -81,19 +82,17 @@ define(['../lang/isObject', '../date/now'], function(isObject, now) {
         timeoutId,
         trailingCall,
         lastCalled = 0,
+        leading = false,
         maxWait = false,
         trailing = true;
 
     if (typeof func != 'function') {
       throw new TypeError(FUNC_ERROR_TEXT);
     }
-    wait = wait < 0 ? 0 : (+wait || 0);
-    if (options === true) {
-      var leading = true;
-      trailing = false;
-    } else if (isObject(options)) {
+    wait = toNumber(wait) || 0;
+    if (isObject(options)) {
       leading = !!options.leading;
-      maxWait = 'maxWait' in options && nativeMax(+options.maxWait || 0, wait);
+      maxWait = 'maxWait' in options && nativeMax(toNumber(options.maxWait) || 0, wait);
       trailing = 'trailing' in options ? !!options.trailing : trailing;
     }
 
@@ -105,7 +104,7 @@ define(['../lang/isObject', '../date/now'], function(isObject, now) {
         clearTimeout(maxTimeoutId);
       }
       lastCalled = 0;
-      maxTimeoutId = timeoutId = trailingCall = undefined;
+      args = maxTimeoutId = thisArg = timeoutId = trailingCall = undefined;
     }
 
     function complete(isCalled, id) {
@@ -129,6 +128,14 @@ define(['../lang/isObject', '../date/now'], function(isObject, now) {
       } else {
         timeoutId = setTimeout(delayed, remaining);
       }
+    }
+
+    function flush() {
+      if ((timeoutId && trailingCall) || (maxTimeoutId && trailing)) {
+        result = func.apply(thisArg, args);
+      }
+      cancel();
+      return result;
     }
 
     function maxDelayed() {
@@ -177,6 +184,7 @@ define(['../lang/isObject', '../date/now'], function(isObject, now) {
       return result;
     }
     debounced.cancel = cancel;
+    debounced.flush = flush;
     return debounced;
   }
 

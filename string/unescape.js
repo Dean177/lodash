@@ -1,4 +1,4 @@
-define(['../internal/baseToString', '../internal/unescapeHtmlChar'], function(baseToString, unescapeHtmlChar) {
+define(['../lang/toString', '../internal/unescapeHtmlChar'], function(toString, unescapeHtmlChar) {
 
   /** Used to match HTML entities and HTML characters. */
   var reEscapedHtml = /&(?:amp|lt|gt|quot|#39|#96);/g,
@@ -23,7 +23,7 @@ define(['../internal/baseToString', '../internal/unescapeHtmlChar'], function(ba
    * // => 'fred, barney, & pebbles'
    */
   function unescape(string) {
-    string = baseToString(string);
+    string = toString(string);
     return (string && reHasEscapedHtml.test(string))
       ? string.replace(reEscapedHtml, unescapeHtmlChar)
       : string;

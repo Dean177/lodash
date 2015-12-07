@@ -1,4 +1,4 @@
-define(['../internal/baseToString'], function(baseToString) {
+define(['../lang/toString'], function(toString) {
 
   /** Used to generate unique IDs. */
   var idCounter = 0;
@@ -21,7 +21,7 @@ define(['../internal/baseToString'], function(baseToString) {
    */
   function uniqueId(prefix) {
     var id = ++idCounter;
-    return baseToString(prefix) + id;
+    return toString(prefix) + id;
   }
 
   return uniqueId;

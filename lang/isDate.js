@@ -1,9 +1,9 @@
-define(['../internal/isObjectLike'], function(isObjectLike) {
+define(['./isObjectLike'], function(isObjectLike) {
 
   /** `Object#toString` result references. */
   var dateTag = '[object Date]';
 
-  /** Used for native method references. */
+  /** Used for built-in method references. */
   var objectProto = Object.prototype;
 
   /**

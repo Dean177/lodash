@@ -1,7 +1,7 @@
-define(['../internal/isObjectLike', './isPlainObject'], function(isObjectLike, isPlainObject) {
+define(['./isObjectLike', './isPlainObject'], function(isObjectLike, isPlainObject) {
 
   /**
-   * Checks if `value` is a DOM element.
+   * Checks if `value` is likely a DOM element.
    *
    * @static
    * @memberOf _
